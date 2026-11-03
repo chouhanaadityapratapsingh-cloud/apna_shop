@@ -1,0 +1,63 @@
+{
+  "@@locale": "en",
+  "appName": "Apna Shop",
+  "signInTitle": "Sign in",
+  "signInSubtitle": "Sign in to manage your shop's stock.",
+  "signUpTitle": "Create account",
+  "signUpSubtitle": "Create an account to get started.",
+  "emailLabel": "Email",
+  "passwordLabel": "Password",
+  "confirmPasswordLabel": "Confirm password",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
+  "signInButton": "Sign in",
+  "signUpButton": "Create account",
+  "noAccountPrompt": "New to Apna Shop?",
+  "createAccountLink": "Create an account",
+  "haveAccountPrompt": "Already have an account?",
+  "signInLink": "Sign in",
+  "loading": "Loading",
+  "fieldRequired": "This field is required",
+  "emailInvalid": "Enter a valid email address",
+  "passwordTooShort": "Password must be at least {min} characters",
+  "@passwordTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "passwordsDoNotMatch": "Passwords do not match",
+  "errorInvalidCredentials": "Incorrect email or password.",
+  "errorInvalidEmail": "That email address doesn't look right.",
+  "errorEmailInUse": "An account with this email already exists. Try signing in.",
+  "errorWeakPassword": "Choose a stronger password.",
+  "errorNetwork": "No internet connection. Check your connection and try again.",
+  "errorTooManyRequests": "Too many attempts. Please wait a moment and try again.",
+  "errorUserDisabled": "This account has been disabled.",
+  "errorUnknown": "Something went wrong. Please try again.",
+  "navHome": "Home",
+  "navProducts": "Products",
+  "navActivity": "Activity",
+  "navReports": "Reports",
+  "navProfile": "Profile",
+  "comingSoonTitle": "Not available yet",
+  "comingSoonBody": "This section is being built and will arrive in a later update.",
+  "homeWelcome": "Welcome, {name}",
+  "@homeWelcome": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeNextStepTitle": "Next step: set up your store",
+  "homeNextStepBody": "Store setup is not available yet. It will be added in the next update.",
+  "profileSignedInAs": "Signed in as",
+  "signOut": "Sign out",
+  "signOutConfirmTitle": "Sign out?",
+  "signOutConfirmBody": "You will need to sign in again to use Apna Shop.",
+  "cancel": "Cancel",
+  "setupRequiredTitle": "Firebase setup needed",
+  "setupRequiredBody": "This build is not connected to a Firebase project yet. Run 'flutterfire configure' for your Apna Shop Firebase project, then restart the app."
+}
