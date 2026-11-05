@@ -7,6 +7,8 @@ enum AppErrorType {
   network,
   tooManyRequests,
   userDisabled,
+  permissionDenied,
+  storeAlreadyExists,
   unknown,
 }
 

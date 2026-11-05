@@ -1,0 +1,8 @@
+{
+  "name": "apna-shop-rules-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test rules.test.js"
+  }
+}

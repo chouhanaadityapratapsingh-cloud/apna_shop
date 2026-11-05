@@ -2,6 +2,7 @@ import 'package:apna_shop/features/auth/data/firebase_auth_repository.dart';
 import 'package:apna_shop/features/auth/domain/auth_repository.dart';
 import 'package:apna_shop/features/auth/domain/auth_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>(
@@ -38,6 +39,10 @@ class AuthController extends Notifier<AsyncValue<void>> {
     final repository = ref.read(authRepositoryProvider);
     state = const AsyncLoading<void>();
     final result = await AsyncValue.guard(() => action(repository));
+    if (kDebugMode && result.hasError) {
+      final error = result.error;
+      debugPrint('Auth failed: ${error is Object ? error.runtimeType : error}');
+    }
     // The screen can be gone already: a successful sign-in redirects away.
     if (!ref.mounted) return;
     state = result;

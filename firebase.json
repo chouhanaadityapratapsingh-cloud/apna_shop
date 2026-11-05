@@ -1,0 +1,31 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "emulators": {
+    "firestore": {
+      "port": 8080
+    },
+    "singleProjectMode": true
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "apna-shop-dev",
+          "appId": "1:812061563826:android:990697bb30a366a27b62ab",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "apna-shop-dev",
+          "configurations": {
+            "android": "1:812061563826:android:990697bb30a366a27b62ab"
+          }
+        }
+      }
+    }
+  }
+}

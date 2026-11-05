@@ -1,0 +1,137 @@
+rules_version = '2';
+
+// Apna Shop - Firestore security rules (M2: stores, members, users).
+//
+// Default is DENY: any path without an explicit rule below is closed.
+// Products, stock movements, sales and alerts stay closed until M3/M4 add
+// their own rules and tests. Stock quantity must only ever change through a
+// trusted backend function (M4), never from the client.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------- helpers ----------
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function storePath(storeId) {
+      return /databases/$(database)/documents/stores/$(storeId);
+    }
+
+    function memberPath(storeId, uid) {
+      return /databases/$(database)/documents/stores/$(storeId)/members/$(uid);
+    }
+
+    function userPath(uid) {
+      return /databases/$(database)/documents/users/$(uid);
+    }
+
+    // True only for a signed-in user with an ACTIVE membership in this store.
+    function isActiveMember(storeId) {
+      return signedIn()
+        && exists(memberPath(storeId, request.auth.uid))
+        && get(memberPath(storeId, request.auth.uid)).data.status == 'active';
+    }
+
+    // Validates the store document written when a store is created.
+    // The owner's member document must be written in the SAME batch.
+    function validNewStore(storeId) {
+      let d = request.resource.data;
+      return d.keys().hasOnly([
+          'name', 'ownerUid', 'currencyCode', 'timezone',
+          'city', 'phone', 'createdAt', 'isActive'
+        ])
+        && d.keys().hasAll([
+          'name', 'ownerUid', 'currencyCode', 'timezone', 'createdAt', 'isActive'
+        ])
+        && d.ownerUid == request.auth.uid
+        && d.name is string && d.name.size() >= 2 && d.name.size() <= 80
+        && d.currencyCode == 'INR'
+        && d.timezone == 'Asia/Kolkata'
+        && d.isActive == true
+        && d.createdAt == request.time
+        && (!('city' in d) || (d.city is string && d.city.size() <= 80))
+        && (!('phone' in d) || (d.phone is string && d.phone.size() <= 15))
+        && existsAfter(memberPath(storeId, request.auth.uid))
+        && getAfter(memberPath(storeId, request.auth.uid)).data.role == 'owner'
+        // One store per user in the MVP.
+        && !(exists(userPath(request.auth.uid))
+             && 'activeStoreId' in get(userPath(request.auth.uid)).data);
+    }
+
+    // Validates the owner's member document written at store creation.
+    function validOwnerMember(storeId) {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['role', 'status', 'permissions', 'joinedAt'])
+        && d.keys().hasAll(['role', 'status', 'permissions', 'joinedAt'])
+        && d.role == 'owner'
+        && d.status == 'active'
+        && d.permissions is list
+        && d.permissions.size() == 0
+        && d.joinedAt == request.time
+        && existsAfter(storePath(storeId))
+        && getAfter(storePath(storeId)).data.ownerUid == request.auth.uid;
+    }
+
+    // Validates a user profile document.
+    function validUserDoc(uid) {
+      let d = request.resource.data;
+      return d.keys().hasOnly([
+          'displayName', 'email', 'preferredLanguage', 'activeStoreId', 'createdAt'
+        ])
+        && (!('displayName' in d) || (d.displayName is string && d.displayName.size() <= 100))
+        && (!('email' in d) || (d.email is string && d.email.size() <= 254))
+        && (!('preferredLanguage' in d) || d.preferredLanguage in ['en', 'hi'])
+        // A user may only point at a store where they are (being made) an
+        // active member.
+        && (!('activeStoreId' in d)
+            || (d.activeStoreId is string
+                && existsAfter(memberPath(d.activeStoreId, uid))
+                && getAfter(memberPath(d.activeStoreId, uid)).data.status == 'active'));
+    }
+
+    // ---------- users ----------
+
+    match /users/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+
+      allow create: if signedIn() && request.auth.uid == uid && validUserDoc(uid);
+
+      // activeStoreId can be set once and never changed by the client.
+      allow update: if signedIn() && request.auth.uid == uid && validUserDoc(uid)
+        && (!('activeStoreId' in resource.data)
+            || request.resource.data.activeStoreId == resource.data.activeStoreId);
+
+      allow delete: if false;
+    }
+
+    // ---------- stores ----------
+
+    match /stores/{storeId} {
+      allow read: if isActiveMember(storeId);
+
+      allow create: if signedIn() && validNewStore(storeId);
+
+      // Store settings editing and closing arrive in a later milestone.
+      allow update, delete: if false;
+
+      match /members/{memberId} {
+        allow read: if isActiveMember(storeId);
+
+        // Only the brand-new store's owner bootstrap. Joining an existing
+        // store will go through trusted invite functions later.
+        allow create: if signedIn()
+          && memberId == request.auth.uid
+          && !exists(storePath(storeId))
+          && validOwnerMember(storeId);
+
+        // No client-side role changes or removals.
+        allow update, delete: if false;
+      }
+
+      // products, stockMovements, sales, alerts: no rule yet = denied.
+    }
+  }
+}

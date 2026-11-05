@@ -128,11 +128,11 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
-  String get homeNextStepTitle => 'अगला कदम: अपनी दुकान सेट करें';
+  String get homeNextStepTitle => 'अगला कदम: अपने प्रोडक्ट जोड़ें';
 
   @override
   String get homeNextStepBody =>
-      'दुकान सेटअप अभी उपलब्ध नहीं है। यह अगले अपडेट में जोड़ा जाएगा।';
+      'प्रोडक्ट मैनेजमेंट अभी उपलब्ध नहीं है। यह अगले अपडेट में जोड़ा जाएगा।';
 
   @override
   String get profileSignedInAs => 'इस खाते से साइन इन हैं';
@@ -156,4 +156,73 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get setupRequiredBody =>
       'यह ऐप अभी किसी Firebase प्रोजेक्ट से जुड़ा नहीं है। अपने Apna Shop Firebase प्रोजेक्ट के लिए \'flutterfire configure\' चलाएँ, फिर ऐप दोबारा शुरू करें।';
+
+  @override
+  String get createStoreTitle => 'अपनी दुकान सेट करें';
+
+  @override
+  String get createStoreSubtitle =>
+      'अपनी दुकान के बारे में थोड़ा बताएँ। इसके बाद आप प्रोडक्ट जोड़ सकते हैं।';
+
+  @override
+  String get storeNameLabel => 'दुकान का नाम';
+
+  @override
+  String get storeCityLabel => 'शहर (वैकल्पिक)';
+
+  @override
+  String get storePhoneLabel => 'फ़ोन नंबर (वैकल्पिक)';
+
+  @override
+  String get createStoreButton => 'दुकान बनाएँ';
+
+  @override
+  String get createStoreOnlineNote => 'दुकान बनाने के लिए इंटरनेट ज़रूरी है।';
+
+  @override
+  String storeNameTooShort(int min) {
+    return 'दुकान का नाम कम से कम $min अक्षरों का होना चाहिए';
+  }
+
+  @override
+  String storeNameTooLong(int max) {
+    return 'दुकान का नाम ज़्यादा से ज़्यादा $max अक्षरों का हो सकता है';
+  }
+
+  @override
+  String storeCityTooLong(int max) {
+    return 'शहर का नाम ज़्यादा से ज़्यादा $max अक्षरों का हो सकता है';
+  }
+
+  @override
+  String get storePhoneInvalid => 'सही 10 अंकों का मोबाइल नंबर लिखें';
+
+  @override
+  String get errorPermissionDenied => 'आपको यह करने की अनुमति नहीं है।';
+
+  @override
+  String get errorStoreAlreadyExists => 'आपकी दुकान पहले से बनी हुई है।';
+
+  @override
+  String get storeLoadErrorTitle => 'आपकी दुकान लोड नहीं हो पाई';
+
+  @override
+  String get storeLoadErrorBody => 'इंटरनेट कनेक्शन जाँचकर फिर कोशिश करें।';
+
+  @override
+  String get retry => 'फिर कोशिश करें';
+
+  @override
+  String get roleOwner => 'मालिक';
+
+  @override
+  String get roleManager => 'मैनेजर';
+
+  @override
+  String get roleStaff => 'स्टाफ़';
+
+  @override
+  String homeRole(String role) {
+    return 'आपकी भूमिका: $role';
+  }
 }

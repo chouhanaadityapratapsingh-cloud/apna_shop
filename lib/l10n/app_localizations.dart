@@ -323,13 +323,13 @@ abstract class AppLocalizations {
   /// No description provided for @homeNextStepTitle.
   ///
   /// In en, this message translates to:
-  /// **'Next step: set up your store'**
+  /// **'Next step: add your products'**
   String get homeNextStepTitle;
 
   /// No description provided for @homeNextStepBody.
   ///
   /// In en, this message translates to:
-  /// **'Store setup is not available yet. It will be added in the next update.'**
+  /// **'Product management is not available yet. It will be added in the next update.'**
   String get homeNextStepBody;
 
   /// No description provided for @profileSignedInAs.
@@ -373,6 +373,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This build is not connected to a Firebase project yet. Run \'flutterfire configure\' for your Apna Shop Firebase project, then restart the app.'**
   String get setupRequiredBody;
+
+  /// No description provided for @createStoreTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up your store'**
+  String get createStoreTitle;
+
+  /// No description provided for @createStoreSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us a little about your shop. You can add products next.'**
+  String get createStoreSubtitle;
+
+  /// No description provided for @storeNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Store name'**
+  String get storeNameLabel;
+
+  /// No description provided for @storeCityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'City (optional)'**
+  String get storeCityLabel;
+
+  /// No description provided for @storePhoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number (optional)'**
+  String get storePhoneLabel;
+
+  /// No description provided for @createStoreButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create store'**
+  String get createStoreButton;
+
+  /// No description provided for @createStoreOnlineNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Creating a store needs an internet connection.'**
+  String get createStoreOnlineNote;
+
+  /// No description provided for @storeNameTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Store name must be at least {min} characters'**
+  String storeNameTooShort(int min);
+
+  /// No description provided for @storeNameTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Store name can be at most {max} characters'**
+  String storeNameTooLong(int max);
+
+  /// No description provided for @storeCityTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'City can be at most {max} characters'**
+  String storeCityTooLong(int max);
+
+  /// No description provided for @storePhoneInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid 10-digit mobile number'**
+  String get storePhoneInvalid;
+
+  /// No description provided for @errorPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have permission to do this.'**
+  String get errorPermissionDenied;
+
+  /// No description provided for @errorStoreAlreadyExists.
+  ///
+  /// In en, this message translates to:
+  /// **'You already have a store.'**
+  String get errorStoreAlreadyExists;
+
+  /// No description provided for @storeLoadErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load your store'**
+  String get storeLoadErrorTitle;
+
+  /// No description provided for @storeLoadErrorBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your internet connection and try again.'**
+  String get storeLoadErrorBody;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get retry;
+
+  /// No description provided for @roleOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get roleOwner;
+
+  /// No description provided for @roleManager.
+  ///
+  /// In en, this message translates to:
+  /// **'Manager'**
+  String get roleManager;
+
+  /// No description provided for @roleStaff.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff'**
+  String get roleStaff;
+
+  /// No description provided for @homeRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Your role: {role}'**
+  String homeRole(String role);
 }
 
 class _AppLocalizationsDelegate

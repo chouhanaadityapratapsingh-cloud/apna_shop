@@ -51,13 +51,61 @@
       }
     }
   },
-  "homeNextStepTitle": "Next step: set up your store",
-  "homeNextStepBody": "Store setup is not available yet. It will be added in the next update.",
+  "homeNextStepTitle": "Next step: add your products",
+  "homeNextStepBody": "Product management is not available yet. It will be added in the next update.",
   "profileSignedInAs": "Signed in as",
   "signOut": "Sign out",
   "signOutConfirmTitle": "Sign out?",
   "signOutConfirmBody": "You will need to sign in again to use Apna Shop.",
   "cancel": "Cancel",
   "setupRequiredTitle": "Firebase setup needed",
-  "setupRequiredBody": "This build is not connected to a Firebase project yet. Run 'flutterfire configure' for your Apna Shop Firebase project, then restart the app."
+  "setupRequiredBody": "This build is not connected to a Firebase project yet. Run 'flutterfire configure' for your Apna Shop Firebase project, then restart the app.",
+  "createStoreTitle": "Set up your store",
+  "createStoreSubtitle": "Tell us a little about your shop. You can add products next.",
+  "storeNameLabel": "Store name",
+  "storeCityLabel": "City (optional)",
+  "storePhoneLabel": "Phone number (optional)",
+  "createStoreButton": "Create store",
+  "createStoreOnlineNote": "Creating a store needs an internet connection.",
+  "storeNameTooShort": "Store name must be at least {min} characters",
+  "@storeNameTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "storeNameTooLong": "Store name can be at most {max} characters",
+  "@storeNameTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "storeCityTooLong": "City can be at most {max} characters",
+  "@storeCityTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "storePhoneInvalid": "Enter a valid 10-digit mobile number",
+  "errorPermissionDenied": "You don't have permission to do this.",
+  "errorStoreAlreadyExists": "You already have a store.",
+  "storeLoadErrorTitle": "Couldn't load your store",
+  "storeLoadErrorBody": "Check your internet connection and try again.",
+  "retry": "Try again",
+  "roleOwner": "Owner",
+  "roleManager": "Manager",
+  "roleStaff": "Staff",
+  "homeRole": "Your role: {role}",
+  "@homeRole": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  }
 }

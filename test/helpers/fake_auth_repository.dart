@@ -5,7 +5,11 @@ import 'package:apna_shop/features/auth/domain/auth_repository.dart';
 import 'package:apna_shop/features/auth/domain/auth_user.dart';
 
 class FakeAuthRepository implements AuthRepository {
-  FakeAuthRepository({this.signInError, this.signUpError});
+  FakeAuthRepository({
+    this.signInError,
+    this.signUpError,
+    AuthUser? initialUser,
+  }) : _user = initialUser;
 
   final StreamController<AuthUser?> _changes =
       StreamController<AuthUser?>.broadcast();

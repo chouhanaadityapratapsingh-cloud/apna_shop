@@ -13,6 +13,7 @@ String fieldErrorText(AppLocalizations l10n, FieldError error) {
   };
 }
 
+/// User-facing text for any error thrown by a repository.
 String errorText(AppLocalizations l10n, Object error) {
   if (error is! AppException) return l10n.errorUnknown;
   return switch (error.type) {
@@ -23,6 +24,8 @@ String errorText(AppLocalizations l10n, Object error) {
     AppErrorType.network => l10n.errorNetwork,
     AppErrorType.tooManyRequests => l10n.errorTooManyRequests,
     AppErrorType.userDisabled => l10n.errorUserDisabled,
+    AppErrorType.permissionDenied => l10n.errorPermissionDenied,
+    AppErrorType.storeAlreadyExists => l10n.errorStoreAlreadyExists,
     AppErrorType.unknown => l10n.errorUnknown,
   };
 }

@@ -7,6 +7,10 @@ import 'package:apna_shop/features/auth/presentation/splash_screen.dart';
 import 'package:apna_shop/features/dashboard/presentation/home_screen.dart';
 import 'package:apna_shop/features/settings/presentation/profile_screen.dart';
 import 'package:apna_shop/features/shell/presentation/app_shell.dart';
+import 'package:apna_shop/features/store_setup/domain/store_setup_status.dart';
+import 'package:apna_shop/features/store_setup/presentation/create_store_screen.dart';
+import 'package:apna_shop/features/store_setup/presentation/store_error_screen.dart';
+import 'package:apna_shop/features/store_setup/presentation/store_providers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -15,6 +19,8 @@ abstract final class AppRoutes {
   static const String splash = '/splash';
   static const String signIn = '/sign-in';
   static const String signUp = '/sign-up';
+  static const String createStore = '/create-store';
+  static const String storeError = '/store-error';
   static const String home = '/home';
   static const String products = '/products';
   static const String activity = '/activity';
@@ -25,8 +31,9 @@ abstract final class AppRoutes {
 /// Pure redirect rule, kept separate from GoRouter so it can be unit tested.
 ///
 /// Returns the path to redirect to, or null to stay on [location].
-String? resolveAuthRedirect({
+String? resolveRedirect({
   required AsyncValue<AuthUser?> authState,
+  required StoreSetupStatus storeStatus,
   required String location,
 }) {
   final onSplash = location == AppRoutes.splash;
@@ -38,11 +45,26 @@ String? resolveAuthRedirect({
     return onSplash ? null : AppRoutes.splash;
   }
 
-  final signedIn = authState.value != null;
-  if (signedIn) {
-    return (onSplash || onAuthPage) ? AppRoutes.home : null;
+  if (authState.value == null) {
+    return onAuthPage ? null : AppRoutes.signIn;
   }
-  return onAuthPage ? null : AppRoutes.signIn;
+
+  // Signed in: next find out whether they have a store.
+  switch (storeStatus) {
+    case StoreSetupStatus.loading:
+      return onSplash ? null : AppRoutes.splash;
+    case StoreSetupStatus.missing:
+      return location == AppRoutes.createStore ? null : AppRoutes.createStore;
+    case StoreSetupStatus.error:
+      return location == AppRoutes.storeError ? null : AppRoutes.storeError;
+    case StoreSetupStatus.ready:
+      final onSetupPage =
+          onSplash ||
+          onAuthPage ||
+          location == AppRoutes.createStore ||
+          location == AppRoutes.storeError;
+      return onSetupPage ? AppRoutes.home : null;
+  }
 }
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -50,18 +72,30 @@ final routerProvider = Provider<GoRouter>((ref) {
   ref.listen<AsyncValue<AuthUser?>>(authStateProvider, (_, _) {
     refresh.value++;
   });
+  ref.listen<StoreSetupStatus>(storeSetupStatusProvider, (_, _) {
+    refresh.value++;
+  });
 
   final router = GoRouter(
     initialLocation: AppRoutes.splash,
     refreshListenable: refresh,
-    redirect: (context, state) => resolveAuthRedirect(
+    redirect: (context, state) => resolveRedirect(
       authState: ref.read(authStateProvider),
+      storeStatus: ref.read(storeSetupStatusProvider),
       location: state.matchedLocation,
     ),
     routes: [
       GoRoute(path: AppRoutes.splash, builder: (_, _) => const SplashScreen()),
       GoRoute(path: AppRoutes.signIn, builder: (_, _) => const SignInScreen()),
       GoRoute(path: AppRoutes.signUp, builder: (_, _) => const SignUpScreen()),
+      GoRoute(
+        path: AppRoutes.createStore,
+        builder: (_, _) => const CreateStoreScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.storeError,
+        builder: (_, _) => const StoreErrorScreen(),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             AppShell(navigationShell: navigationShell),

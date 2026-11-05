@@ -129,11 +129,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get homeNextStepTitle => 'Next step: set up your store';
+  String get homeNextStepTitle => 'Next step: add your products';
 
   @override
   String get homeNextStepBody =>
-      'Store setup is not available yet. It will be added in the next update.';
+      'Product management is not available yet. It will be added in the next update.';
 
   @override
   String get profileSignedInAs => 'Signed in as';
@@ -157,4 +157,75 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get setupRequiredBody =>
       'This build is not connected to a Firebase project yet. Run \'flutterfire configure\' for your Apna Shop Firebase project, then restart the app.';
+
+  @override
+  String get createStoreTitle => 'Set up your store';
+
+  @override
+  String get createStoreSubtitle =>
+      'Tell us a little about your shop. You can add products next.';
+
+  @override
+  String get storeNameLabel => 'Store name';
+
+  @override
+  String get storeCityLabel => 'City (optional)';
+
+  @override
+  String get storePhoneLabel => 'Phone number (optional)';
+
+  @override
+  String get createStoreButton => 'Create store';
+
+  @override
+  String get createStoreOnlineNote =>
+      'Creating a store needs an internet connection.';
+
+  @override
+  String storeNameTooShort(int min) {
+    return 'Store name must be at least $min characters';
+  }
+
+  @override
+  String storeNameTooLong(int max) {
+    return 'Store name can be at most $max characters';
+  }
+
+  @override
+  String storeCityTooLong(int max) {
+    return 'City can be at most $max characters';
+  }
+
+  @override
+  String get storePhoneInvalid => 'Enter a valid 10-digit mobile number';
+
+  @override
+  String get errorPermissionDenied => 'You don\'t have permission to do this.';
+
+  @override
+  String get errorStoreAlreadyExists => 'You already have a store.';
+
+  @override
+  String get storeLoadErrorTitle => 'Couldn\'t load your store';
+
+  @override
+  String get storeLoadErrorBody =>
+      'Check your internet connection and try again.';
+
+  @override
+  String get retry => 'Try again';
+
+  @override
+  String get roleOwner => 'Owner';
+
+  @override
+  String get roleManager => 'Manager';
+
+  @override
+  String get roleStaff => 'Staff';
+
+  @override
+  String homeRole(String role) {
+    return 'Your role: $role';
+  }
 }
