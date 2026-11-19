@@ -65,5 +65,782 @@
   "roleOwner": "मालिक",
   "roleManager": "मैनेजर",
   "roleStaff": "स्टाफ़",
-  "homeRole": "आपकी भूमिका: {role}"
+  "homeRole": "आपकी भूमिका: {role}",
+  "productsSearchHint": "नाम, SKU या बारकोड से खोजें",
+  "productsLowStockFilter": "सिर्फ़ कम स्टॉक",
+  "productsEmptyTitle": "अभी कोई प्रोडक्ट नहीं",
+  "productsEmptyBody": "स्टॉक ट्रैक करने के लिए अपना पहला प्रोडक्ट जोड़ें।",
+  "productsNoMatchTitle": "कोई प्रोडक्ट नहीं मिला",
+  "productsNoMatchBody": "दूसरा नाम आज़माएँ, या फ़िल्टर हटाएँ।",
+  "clearFilters": "फ़िल्टर हटाएँ",
+  "productsLoadErrorTitle": "प्रोडक्ट लोड नहीं हो सके",
+  "addProduct": "प्रोडक्ट जोड़ें",
+  "editProduct": "प्रोडक्ट बदलें",
+  "lowStockBadge": "कम स्टॉक",
+  "lowStockLine": "सिर्फ़ {quantity} बचा है",
+  "@lowStockLine": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      }
+    }
+  },
+  "detailsInStock": "स्टॉक में",
+  "detailsSellingPrice": "बिक्री मूल्य",
+  "detailsPurchasePrice": "खरीद मूल्य",
+  "detailsLowStockAt": "कम स्टॉक की सीमा",
+  "detailsCategory": "श्रेणी",
+  "detailsBarcode": "बारकोड",
+  "detailsSku": "SKU",
+  "productNotFound": "यह प्रोडक्ट अब मौजूद नहीं है।",
+  "productArchivedNote": "यह प्रोडक्ट आर्काइव है।",
+  "archiveProduct": "प्रोडक्ट आर्काइव करें",
+  "archiveConfirmTitle": "यह प्रोडक्ट आर्काइव करें?",
+  "archiveConfirmBody": "यह आपकी सूची से हट जाएगा। इसका इतिहास सुरक्षित रहेगा और इसका बारकोड दोबारा इस्तेमाल हो सकेगा।",
+  "archiveAction": "आर्काइव करें",
+  "productNameLabel": "प्रोडक्ट का नाम",
+  "productBarcodeLabel": "बारकोड (वैकल्पिक)",
+  "productSkuLabel": "SKU (वैकल्पिक)",
+  "productCategoryLabel": "श्रेणी (वैकल्पिक)",
+  "productUnitLabel": "इकाई",
+  "purchasePriceLabel": "खरीद मूल्य ₹ में (वैकल्पिक)",
+  "sellingPriceLabel": "बिक्री मूल्य ₹ में",
+  "openingQuantityLabel": "शुरुआती स्टॉक",
+  "lowStockThresholdLabel": "स्टॉक इतना या कम होने पर बताएँ",
+  "saveProduct": "प्रोडक्ट सेव करें",
+  "productOnlineNote": "सेव करने के लिए इंटरनेट चाहिए।",
+  "quantityEditNote": "स्टॉक की मात्रा यहाँ नहीं बदली जा सकती। प्रोडक्ट पेज पर स्टॉक आया, स्टॉक गया या स्टॉक सुधारें इस्तेमाल करें।",
+  "productNameTooShort": "नाम कम से कम {min} अक्षर का होना चाहिए",
+  "@productNameTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "productNameTooLong": "नाम ज़्यादा से ज़्यादा {max} अक्षर का हो सकता है",
+  "@productNameTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "productBarcodeInvalid": "4 से 32 अक्षर, अंक या डैश इस्तेमाल करें",
+  "productSkuTooLong": "SKU ज़्यादा से ज़्यादा {max} अक्षर का हो सकता है",
+  "@productSkuTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "productCategoryTooLong": "श्रेणी ज़्यादा से ज़्यादा {max} अक्षर की हो सकती है",
+  "@productCategoryTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "priceInvalid": "कीमत ऐसे लिखें: 25 या 25.50",
+  "wholeNumberInvalid": "0 से {max} तक की पूरी संख्या लिखें",
+  "@wholeNumberInvalid": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "errorDuplicateBarcode": "इस दुकान के किसी दूसरे प्रोडक्ट में यही बारकोड है।",
+  "unitPiece": "पीस",
+  "unitPacket": "पैकेट",
+  "unitBox": "डिब्बा",
+  "unitBottle": "बोतल",
+  "unitPack": "पैक",
+  "quantityPiece": "{count, plural, other{{count} पीस}}",
+  "@quantityPiece": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "quantityPacket": "{count, plural, other{{count} पैकेट}}",
+  "@quantityPacket": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "quantityBox": "{count, plural, other{{count} डिब्बा}}",
+  "@quantityBox": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "quantityBottle": "{count, plural, other{{count} बोतल}}",
+  "@quantityBottle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "quantityPack": "{count, plural, other{{count} पैक}}",
+  "@quantityPack": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "stockIn": "स्टॉक आया",
+  "stockOut": "स्टॉक गया",
+  "stockAdjust": "स्टॉक सुधारें",
+  "stockHistoryTitle": "स्टॉक का इतिहास",
+  "stockHistoryEmpty": "अभी कोई स्टॉक हलचल नहीं।",
+  "stockAmountLabel": "मात्रा",
+  "stockCountedLabel": "शेल्फ पर गिनी हुई मात्रा",
+  "stockReasonLabel": "कारण",
+  "stockNoteLabel": "नोट (वैकल्पिक)",
+  "stockSave": "सेव करें",
+  "stockCurrentLine": "अभी स्टॉक में: {current}",
+  "@stockCurrentLine": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      }
+    }
+  },
+  "stockSavedSnack": "सेव हो गया। अब स्टॉक में: {quantity}",
+  "@stockSavedSnack": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      }
+    }
+  },
+  "stockAmountInvalid": "पूरी संख्या लिखें, जैसे 12",
+  "stockInsufficient": "स्टॉक में सिर्फ़ {current} है। इससे ज़्यादा नहीं निकाल सकते।",
+  "@stockInsufficient": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      }
+    }
+  },
+  "stockTooMuch": "इससे स्टॉक की अधिकतम सीमा पार हो जाएगी।",
+  "stockNoChange": "यह दर्ज स्टॉक के बराबर ही है।",
+  "reasonPurchase": "खरीद",
+  "reasonSale": "बिक्री",
+  "reasonReturned": "वापसी",
+  "reasonDamaged": "खराब",
+  "reasonExpired": "एक्सपायर",
+  "reasonCorrection": "सुधार",
+  "reasonOther": "अन्य",
+  "errorInsufficientStock": "स्टॉक बदल गया है या काफ़ी नहीं है। कृपया जाँचकर दोबारा कोशिश करें।",
+  "activityEmptyTitle": "अभी कोई गतिविधि नहीं",
+  "activityEmptyBody": "स्टॉक आना, जाना और सुधार यहाँ दिखेंगे।",
+  "activityLoadErrorTitle": "गतिविधि लोड नहीं हो सकी",
+  "scanBarcode": "बारकोड स्कैन करें",
+  "scannerTitle": "बारकोड स्कैन करें",
+  "scannerHint": "बारकोड को कैमरे के सामने रखें। कैमरा न चले तो बारकोड खुद लिखें।",
+  "scannerTorch": "फ़्लैश",
+  "scannerManualEntry": "बारकोड खुद लिखें",
+  "scannerManualTitle": "बारकोड लिखें",
+  "scannerUseCode": "यह बारकोड इस्तेमाल करें",
+  "scannerUnusableCode": "यह कोड बारकोड की तरह इस्तेमाल नहीं हो सकता।",
+  "scannerNoProductTitle": "इस बारकोड का कोई प्रोडक्ट नहीं",
+  "scannerNoProductBody": "बारकोड {code} वाला कोई प्रोडक्ट अभी नहीं है।",
+  "@scannerNoProductBody": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "lookupButton": "डिटेल खोजें",
+  "lookupLoading": "खोज रहे हैं…",
+  "lookupFound": "डिटेल Open Food Facts सूची से भरी गई है। इन्हें जाँच लें और कीमत खुद डालें।",
+  "lookupNotFound": "यह बारकोड ऑनलाइन सूची में नहीं है। डिटेल खुद लिखें।",
+  "lookupFailed": "डिटेल नहीं मिल सकी। इंटरनेट जाँचकर दोबारा कोशिश करें।",
+  "lookupNeedBarcode": "पहले सही बारकोड लिखें या स्कैन करें।",
+  "productBrandLabel": "ब्रांड (वैकल्पिक)",
+  "productBrandTooLong": "ब्रांड ज़्यादा से ज़्यादा {max} अक्षर का हो सकता है",
+  "@productBrandTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "imageCredit": "तस्वीर: Open Food Facts (CC BY-SA)",
+  "removePicture": "तस्वीर हटाएँ",
+  "priceHint": "दूसरों ने {price} बताया है ({date})। यह पुराना या किसी और दुकान का हो सकता है।",
+  "@priceHint": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "priceHintUse": "बिक्री मूल्य में डालें",
+  "pickCommonItem": "आम सामान की सूची से चुनें",
+  "starterTitle": "आम सामान",
+  "starterNote": "सिर्फ़ नाम भरा जाएगा। बारकोड स्कैन करें और कीमत व स्टॉक खुद डालें। सामान पैक साइज़ में है।",
+  "starterSearchHint": "सामान, ब्रांड या हिंदी नाम खोजें",
+  "starterNoMatch": "कोई सामान नहीं मिला। खुद जोड़ें।",
+  "navBill": "बिल",
+  "errorPriceChanged": "बिलिंग के दौरान किसी चीज़ का दाम बदल गया। कृपया जाँचकर दोबारा कोशिश करें।",
+  "billTitle": "नया बिल",
+  "billClear": "बिल खाली करें",
+  "billHistory": "बिल",
+  "billScanItem": "सामान स्कैन करें",
+  "billAddByName": "नाम से",
+  "billEmptyTitle": "अभी कोई सामान नहीं",
+  "billEmptyBody": "बिल में जोड़ने के लिए सामान का बारकोड स्कैन करें।",
+  "billNotInInventory": "बारकोड {code} आपके स्टॉक में नहीं है।",
+  "@billNotInInventory": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "billOutOfStock": "स्टॉक खत्म",
+  "billNotEnoughStock": "स्टॉक काफ़ी नहीं है",
+  "billProductArchived": "यह सामान आर्काइव है",
+  "billCartFull": "एक बिल में ज़्यादा से ज़्यादा {max} अलग सामान हो सकते हैं।",
+  "@billCartFull": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "billInStock": "स्टॉक में: {quantity}",
+  "@billInStock": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      }
+    }
+  },
+  "billDecrease": "कम करें",
+  "billIncrease": "बढ़ाएँ",
+  "billItemsCount": "{count} सामान",
+  "@billItemsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "billDiscount": "छूट",
+  "billDiscountHint": "छूट (रुपये में)",
+  "billApply": "लगाएँ",
+  "billTotal": "कुल",
+  "billSubtotal": "उप-योग",
+  "billMakeBill": "बिल बनाएँ",
+  "billSavedTitle": "बिल सेव हो गया",
+  "billNotFound": "बिल नहीं मिला",
+  "billNumberLabel": "बिल नं. {number}",
+  "@billNumberLabel": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "billNewBill": "नया बिल",
+  "billHistoryEmpty": "अभी कोई बिल नहीं।",
+  "payTitle": "भुगतान",
+  "payFullCash": "पूरा कैश",
+  "payFullUpi": "पूरा UPI",
+  "payFullUdhar": "पूरा उधार",
+  "payCash": "कैश",
+  "payUpi": "UPI",
+  "payUdhar": "उधार",
+  "payUdharHint": "जो अभी नहीं दिया गया",
+  "payTooMuch": "कैश + UPI कुल से ज़्यादा है।",
+  "payNotBalanced": "कैश + UPI + उधार कुल के बराबर होना चाहिए।",
+  "payCustomerPhone": "ग्राहक का मोबाइल नंबर",
+  "payCustomerName": "ग्राहक का नाम",
+  "payCustomerNameRequired": "उधार के लिए ग्राहक का नाम लिखें।",
+  "payCustomerPhoneInvalid": "सही 10 अंकों का मोबाइल नंबर लिखें।",
+  "payCustomer": "ग्राहक",
+  "payOldUdhar": "{name} का पहले से {amount} उधार है।",
+  "@payOldUdhar": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "payUseName": "\"{name}\" इस्तेमाल करें",
+  "@payUseName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "payConfirm": "बिल सेव करें",
+  "pdfOpen": "बिल PDF: प्रिंट / शेयर / डाउनलोड",
+  "pdfTitle": "बिल PDF",
+  "pdfTemplateClassic": "क्लासिक",
+  "pdfTemplateModern": "मॉडर्न",
+  "pdfTemplateThermal": "रसीद",
+  "pdfTemplateMinimal": "मिनिमल",
+  "pdfPrint": "प्रिंट",
+  "pdfShare": "शेयर",
+  "pdfDownload": "डाउनलोड",
+  "pdfSaved": "PDF सेव हो गई।",
+  "pdfActionFailed": "यह नहीं हो पाया। कृपया फिर कोशिश करें।",
+  "payCustomerOptionalTitle": "ग्राहक (वैकल्पिक - बिल पर छपेगा)",
+  "payCustomerNameOptional": "ग्राहक का नाम (वैकल्पिक)",
+  "payCustomerPhoneOptional": "ग्राहक का मोबाइल (वैकल्पिक)",
+  "billMakeNew": "नया बिल बनाएँ",
+  "dashToday": "आज",
+  "dashYesterday": "कल",
+  "dashLast7Days": "7 दिन",
+  "dashSales": "बिक्री",
+  "dashBillsItems": "{bills} बिल • {items} सामान",
+  "@dashBillsItems": {
+    "placeholders": {
+      "bills": {
+        "type": "int"
+      },
+      "items": {
+        "type": "int"
+      }
+    }
+  },
+  "dashTruncated": "सिर्फ़ आख़िरी 500 बिल दिख रहे हैं।",
+  "dashLoadError": "बिक्री लोड नहीं हो पाई।",
+  "dashOwnSalesNote": "आपको सिर्फ़ अपने बनाए बिल दिखते हैं।",
+  "dashUdharPending": "बाकी उधार",
+  "dashUdharCustomers": "{count} ग्राहक",
+  "@dashUdharCustomers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dashLowStockTitle": "कम स्टॉक: {count} सामान",
+  "@dashLowStockTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dashOutOfStock": "{count} का स्टॉक खत्म",
+  "@dashOutOfStock": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dashAllStocked": "सब कुछ कम-स्टॉक सीमा से ऊपर है।",
+  "dashViewAllProducts": "सारे सामान देखें",
+  "navUdhar": "उधार",
+  "errorOverpayment": "यह ग्राहक के उधार से ज़्यादा है। कृपया रकम जाँचें।",
+  "udharTitle": "उधार",
+  "udharTotal": "कुल उधार",
+  "udharSearchHint": "नाम या मोबाइल नंबर खोजें",
+  "udharShowSettled": "चुकता भी दिखाएँ",
+  "udharSettled": "चुकता",
+  "udharEmptyBody": "अभी कोई उधार नहीं। बिल में उधार होगा तो ग्राहक यहाँ दिखेगा।",
+  "udharNoMatch": "कोई ग्राहक नहीं मिला।",
+  "udharLoadError": "उधार लोड नहीं हो पाया।",
+  "udharCustomerMissing": "ग्राहक नहीं मिला।",
+  "udharBalance": "उधार बाकी",
+  "udharRecordPayment": "मिला हुआ पैसा दर्ज करें",
+  "udharLedger": "हिसाब",
+  "udharEntryCredit": "उधार (बिल)",
+  "udharEntryPayment": "पैसा मिला ({method})",
+  "@udharEntryPayment": {
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "udharPaymentTitle": "मिला हुआ पैसा",
+  "udharDueNow": "बाकी उधार: {amount}",
+  "@udharDueNow": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "udharAmountLabel": "मिली रकम",
+  "udharFullAmount": "पूरी रकम",
+  "udharNoteLabel": "नोट (वैकल्पिक)",
+  "udharSavePayment": "पेमेंट सेव करें",
+  "udharOverpay": "{amount} के उधार से ज़्यादा",
+  "@udharOverpay": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "shopDetailsTitle": "दुकान की जानकारी",
+  "shopDetailsSubtitle": "बिल पर छपने वाला नाम, पता, फ़ोन और UPI",
+  "shopDetailsNote": "ये जानकारी हर बिल PDF में ऊपर और नीचे छपती है। सिर्फ़ मालिक इसे बदल सकता है।",
+  "shopAddressLabel": "पता (वैकल्पिक)",
+  "shopUpiLabel": "UPI ID (वैकल्पिक)",
+  "shopUpiHelper": "जैसे: yourshop@okhdfcbank",
+  "shopFooterLabel": "बिल की आख़िरी लाइन (वैकल्पिक)",
+  "shopFooterHelper": "जैसे: धन्यवाद! फिर पधारें।",
+  "shopSave": "सेव करें",
+  "shopSaved": "दुकान की जानकारी सेव हो गई।",
+  "storeAddressTooLong": "पता ज़्यादा से ज़्यादा {max} अक्षर का हो सकता है",
+  "@storeAddressTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "storeFooterTooLong": "यह लाइन ज़्यादा से ज़्यादा {max} अक्षर की हो सकती है",
+  "@storeFooterTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "storeUpiInvalid": "सही UPI ID लिखें, जैसे name@bank",
+  "reportsOpen": "रिपोर्ट",
+  "reportsTitle": "बिक्री रिपोर्ट",
+  "reportsLast30Days": "30 दिन",
+  "reportsThisMonth": "इस महीने",
+  "reportsCustom": "तारीख चुनें",
+  "reportsExport": "CSV एक्सपोर्ट",
+  "reportsExported": "CSV सेव हो गई।",
+  "reportsEmpty": "इस अवधि में कोई बिल नहीं।",
+  "reportsTruncated": "सिर्फ़ आख़िरी {limit} बिल दिख रहे हैं।",
+  "@reportsTruncated": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "reportsProfit": "मुनाफ़ा",
+  "reportsNoProfit": "मुनाफ़ा इस अपडेट के बाद बने बिलों पर दिखेगा (पुराने बिलों में खरीद भाव सेव नहीं था)।",
+  "reportsProfitPartial": "{total} में से {counted} बिल गिने गए, जिनमें खरीद भाव है।",
+  "@reportsProfitPartial": {
+    "placeholders": {
+      "counted": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "reportsDayByDay": "दिन-दर-दिन",
+  "reportsBillsCount": "{bills} बिल",
+  "@reportsBillsCount": {
+    "placeholders": {
+      "bills": {
+        "type": "int"
+      }
+    }
+  },
+  "reportsTopQuantity": "सबसे ज़्यादा बिके (मात्रा)",
+  "reportsTopRevenue": "सबसे ज़्यादा बिके (रकम)",
+  "voiceOpen": "बोलकर जोड़ें",
+  "voiceTitle": "बोलकर सामान जोड़ें",
+  "voiceExample": "ऐसे बोलें: 2 atta, 1 sugar, 3 parle g। नीचे टाइप भी कर सकते हैं।",
+  "voiceTapToSpeak": "माइक दबाकर बोलें",
+  "voiceListening": "सुन रहा हूँ…",
+  "voiceTranscriptLabel": "जो सुना (आप सुधार सकते हैं)",
+  "voiceUnavailable": "इस फ़ोन पर बोलकर जोड़ना उपलब्ध नहीं है। आप यहाँ टाइप कर सकते हैं।",
+  "voiceMicError": "माइक में दिक्कत आई। फिर कोशिश करें या टाइप करें।",
+  "voiceLangEnglish": "English / Hinglish",
+  "voiceLangHindi": "हिन्दी",
+  "voiceNotFound": "नहीं मिला: {text}",
+  "voiceCheckMatch": "यह सही मिला है या नहीं, देख लें",
+  "voiceAdd": "बिल में जोड़ें ({count})",
+  "voiceAdded": "{count} सामान जुड़ गया।",
+  "voiceAddedWithProblems": "{added} जुड़ा। दिक्कत: {problems}",
+  "voiceNothing": "अभी कुछ समझ नहीं आया।",
+  "orderOpen": "ऑर्डर लिस्ट बनाएं",
+  "orderTitle": "ऑर्डर लिस्ट",
+  "orderIntro": "कम स्टॉक वाला सामान। कितना मंगाना है बदलें; किसी को छोड़ना हो तो 0 रखें।",
+  "orderEmpty": "अभी कुछ भी कम स्टॉक में नहीं है।",
+  "orderInStock": "स्टॉक में: {stock}",
+  "orderCopy": "टेक्स्ट कॉपी करें",
+  "orderShare": "PDF शेयर करें",
+  "orderCopied": "ऑर्डर लिस्ट कॉपी हो गई।",
+  "orderLess": "कम",
+  "orderMore": "ज़्यादा",
+  "unitKg": "किलो (kg)",
+  "unitLitre": "लीटर (L)",
+  "quantityKg": "{amount} किलो",
+  "quantityLitre": "{amount} लीटर",
+  "quantityInvalid": "12 या 1.5 जैसी मात्रा लिखें (दशमलव के बाद 3 अंक तक)।",
+  "billQuantityLabel": "मात्रा",
+  "billQuantityInvalid": "सही मात्रा लिखें, स्टॉक से ज़्यादा नहीं।",
+  "importTitle": "प्रोडक्ट इम्पोर्ट",
+  "importMenu": "फ़ाइल से इम्पोर्ट",
+  "importIntro": "Excel (.xlsx) या CSV फ़ाइल से एक साथ कई प्रोडक्ट जोड़ें। कॉलम किसी भी क्रम में हो सकते हैं। Name, Item, Barcode, Unit, Rate, MRP, Qty, Stock जैसे हेडिंग समझे जाते हैं। फॉर्मैट देखने के लिए सैंपल शीट डाउनलोड करें।",
+  "importPick": "Excel / CSV फ़ाइल चुनें",
+  "importSample": "सैंपल शीट डाउनलोड करें",
+  "importSampleSaved": "सैंपल शीट सेव हो गई।",
+  "importNoPermission": "आपको प्रोडक्ट जोड़ने की अनुमति नहीं है।",
+  "importReading": "फ़ाइल पढ़ रहे हैं…",
+  "importStop": "रोकें",
+  "importErrRead": "यह फ़ाइल पढ़ी नहीं जा सकी। इसे Excel में खोलकर CSV में सेव करें और फिर कोशिश करें।",
+  "importErrNoRows": "फ़ाइल में कोई प्रोडक्ट पंक्ति नहीं है।",
+  "importErrNoColumns": "पहली पंक्ति में Name या Barcode कॉलम नहीं मिला।",
+  "importErrNetwork": "इंटरनेट की समस्या। इम्पोर्ट रुक गया; बाकी जोड़े नहीं गए। कनेक्शन देखकर फिर कोशिश करें।",
+  "importErrUnknown": "कुछ गड़बड़ हो गई। कृपया फिर कोशिश करें।",
+  "importAllowNoPrice": "बिना बिक्री कीमत वाले आइटम भी जोड़ें (कीमत 0, बाद में सेट करें)",
+  "importNothing": "जोड़ने के लिए कुछ नहीं",
+  "importAnother": "दूसरी फ़ाइल चुनें",
+  "importDoneTitle": "इम्पोर्ट पूरा हुआ",
+  "importProblemsTitle": "ध्यान देने वाली पंक्तियाँ",
+  "importProblemNameMissing": "नाम नहीं है",
+  "importProblemNameTooLong": "नाम बहुत लंबा है",
+  "importProblemBarcode": "बारकोड सही नहीं है",
+  "importProblemUnit": "यूनिट समझ नहीं आई",
+  "importProblemPrice": "कीमत सही नहीं है",
+  "importProblemStock": "स्टॉक सही नहीं है",
+  "importProblemThreshold": "कम-स्टॉक अलर्ट सही नहीं है",
+  "importProblemTextLong": "ब्रांड, कैटेगरी या SKU बहुत लंबा है",
+  "importProblemExists": "पहले से आपके प्रोडक्ट में है",
+  "importProblemRepeated": "फ़ाइल में दोहराया गया",
+  "importProblemNotFound": "बारकोड ऑनलाइन नहीं मिला, नाम डालें",
+  "importProblemLookup": "बारकोड खोजा नहीं जा सका",
+  "importProblemWrite": "सेव नहीं हो सका",
+  "importLookingUp": "बारकोड से नाम खोज रहे हैं… {done}/{total}",
+  "@importLookingUp": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "importProgress": "जोड़ रहे हैं… {done}/{total}",
+  "@importProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "importTruncated": "सिर्फ़ पहली {max} पंक्तियाँ ली गई हैं।",
+  "@importTruncated": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "importStart": "{count} प्रोडक्ट जोड़ें",
+  "@importStart": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importCountReady": "{count} तैयार",
+  "@importCountReady": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importCountAdded": "{count} जुड़े",
+  "@importCountAdded": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importCountNoPrice": "{count} बिना कीमत",
+  "@importCountNoPrice": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importCountSkipped": "{count} छोड़े गए",
+  "@importCountSkipped": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importCountInvalid": "{count} में समस्या",
+  "@importCountInvalid": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importRowLine": "पंक्ति {line}: {reason}",
+  "@importRowLine": {
+    "placeholders": {
+      "line": {
+        "type": "int"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "importMoreProblems": "…और {count} और",
+  "@importMoreProblems": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "scannerPhotoButton": "फ़ोटो से बारकोड पढ़ें",
+  "scannerPhotoCamera": "फ़ोटो खींचें",
+  "scannerPhotoGallery": "गैलरी से चुनें",
+  "scannerPhotoReading": "फ़ोटो पढ़ रहे हैं…",
+  "scannerPhotoNotFound": "इस फ़ोटो में बारकोड नहीं मिला। बारकोड सीधा, साफ़ और पास रखकर फिर कोशिश करें।",
+  "scannerPhotoFailed": "फ़ोटो खुल नहीं सकी। कृपया फिर कोशिश करें।",
+  "importPhoto": "बिल या लिस्ट की फ़ोटो",
+  "photoImportTitle": "फ़ोटो से जोड़ें",
+  "photoImportIntro": "सप्लायर बिल या स्टॉक लिस्ट की फ़ोटो खींचें, या गैलरी से चुनें। टेक्स्ट आपके फ़ोन पर ही पढ़ा जाता है, और कुछ भी जुड़ने से पहले आप हर आइटम जाँचते हैं। छपा हुआ टेक्स्ट सबसे अच्छा चलता है; हाथ की लिखाई अक्सर गलत पढ़ी जाती है।",
+  "photoImportReading": "फ़ोटो पढ़ रहे हैं…",
+  "photoImportFailed": "फ़ोटो पढ़ी नहीं जा सकी। कृपया फिर कोशिश करें।",
+  "photoImportEmpty": "इस फ़ोटो में टेक्स्ट नहीं मिला। अच्छी रोशनी में, पन्ना सीधा रखकर फ़ोटो लें।",
+  "photoImportNoItems": "टेक्स्ट मिला, पर कोई प्रोडक्ट पंक्ति नहीं। पास से, साफ़ फ़ोटो लें।",
+  "photoImportCheck": "हर आइटम जाँचें। नाम और संख्या ठीक करें, और जो प्रोडक्ट नहीं है उसे अनटिक करें। बिक्री कीमत डालें, वरना वे आइटम अगली स्क्रीन पर रुके रहेंगे।",
+  "photoImportRetake": "दूसरी फ़ोटो",
+  "photoImportName": "नाम",
+  "photoImportStock": "स्टॉक",
+  "photoImportCost": "खरीद कीमत",
+  "photoImportSelling": "बिक्री कीमत",
+  "photoImportContinue": "{count} आइटम के साथ आगे बढ़ें",
+  "@photoImportContinue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "billPendingLabel": "बिल (सिंक होना बाकी)",
+  "billSavedOfflineNote": "इंटरनेट नहीं है। यह बिल आपके फ़ोन में सेव है। इंटरनेट आते ही यह रिकॉर्ड में जुड़ जाएगा और स्टॉक घटेगा।",
+  "pendingScreenTitle": "सिंक का इंतज़ार करते बिल",
+  "pendingEmpty": "कुछ भी बाकी नहीं है। सभी बिल सेव हैं।",
+  "pendingSyncNow": "अभी कोशिश करें",
+  "pendingRetry": "फिर कोशिश करें",
+  "pendingDiscard": "हटाएँ",
+  "pendingDiscardTitle": "यह बिल हटाएँ?",
+  "pendingDiscardBody": "यह बिल आपके रिकॉर्ड में कभी सेव नहीं हुआ और स्टॉक भी नहीं घटा। हटाने पर यह हमेशा के लिए चला जाएगा।",
+  "pendingWaitingLine": "इंटरनेट का इंतज़ार",
+  "pendingReasonStock": "अभी स्टॉक कम है। स्टॉक जोड़ें, फिर कोशिश करें।",
+  "pendingReasonPrice": "यह बिल बनने के बाद किसी की कीमत बदल गई। पुरानी कीमत वापस रखकर कोशिश करें, या हटा दें।",
+  "pendingReasonGone": "इस बिल का कोई प्रोडक्ट आर्काइव हो गया। इसे हटाकर बिल दोबारा बनाएँ।",
+  "pendingReasonOther": "सेव नहीं हो सका। फिर कोशिश करें।",
+  "pendingBannerWaiting": "ऑफ़लाइन चल रहा है – इंटरनेट आने पर {count} बिल सिंक होंगे",
+  "@pendingBannerWaiting": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pendingBannerAttention": "{count} बिलों पर आपका ध्यान चाहिए",
+  "@pendingBannerAttention": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "productsExport": "प्रोडक्ट डाउनलोड करें (CSV बैकअप)",
+  "productsExported": "प्रोडक्ट सेव हो गए। इस फ़ाइल को Import से दोबारा जोड़ा जा सकता है।",
+  "navNewSale": "नया बिल",
+  "dashKpiLowStock": "कम स्टॉक",
+  "dashRecentTitle": "हाल के बिल",
+  "dashRecentEmpty": "अभी कोई बिक्री नहीं।\n+ बटन दबाकर अपना पहला बिल बनाएँ!",
+  "dashTagReceived": "मिल गया",
+  "dashTagPending": "बाकी",
+  "homeQuickAddProduct": "प्रोडक्ट जोड़ें",
+  "homeQuickImport": "Excel इम्पोर्ट",
+  "homeQuickSync": "ऑफ़लाइन सिंक",
+  "homeQuickSetup": "दुकान सेटअप",
+  "homeGreetingMorning": "सुप्रभात",
+  "homeGreetingAfternoon": "नमस्कार",
+  "homeGreetingEvening": "शुभ संध्या",
+  "ownerNameLabel": "मालिक का नाम",
+  "ownerNameHelper": "आपका नाम, होम स्क्रीन के अभिवादन में दिखेगा",
+  "profileTitle": "प्रोफ़ाइल और सेटिंग्स",
+  "profileSectionShop": "दुकान",
+  "profileSectionPreferences": "पसंद",
+  "profileSectionSupport": "सहायता",
+  "profileOwnerFallback": "दुकान मालिक",
+  "settingsLanguage": "भाषा",
+  "settingsLanguageSystem": "फ़ोन की भाषा",
+  "settingsTheme": "थीम",
+  "settingsThemeSystem": "फ़ोन के अनुसार",
+  "settingsThemeLight": "लाइट",
+  "settingsThemeDark": "डार्क",
+  "settingsHelp": "मदद और सहायता",
+  "settingsHelpSubtitle": "आम सवाल और सुझाव",
+  "settingsAbout": "Apna Shop के बारे में",
+  "aboutBody": "आपकी दुकान के लिए आसान स्टॉक, बिलिंग और उधार। आपका डेटा ऑनलाइन सुरक्षित रहता है और इंटरनेट के बिना भी बिल बन सकते हैं।",
+  "helpTitle": "मदद और सहायता",
+  "helpQ1": "इंटरनेट बंद है, क्या बिल बन सकता है?",
+  "helpA1": "हाँ। बिल फ़ोन में सेव हो जाता है और इंटरनेट आते ही अपने आप ऑनलाइन चला जाता है। इंतज़ार वाले बिल स्क्रीन के ऊपर दिखते हैं।",
+  "helpQ2": "बहुत सारे प्रोडक्ट जल्दी कैसे जोड़ें?",
+  "helpA2": "प्रोडक्ट खोलकर इम्पोर्ट (Excel/CSV या लिस्ट की फ़ोटो) चुनें। प्रोडक्ट जोड़ते समय बारकोड भी स्कैन कर सकते हैं।",
+  "helpQ3": "ग्राहक ने उधार लिया, अब क्या करें?",
+  "helpA3": "बिल बनाते समय उधार चुनें और ग्राहक का नाम व फ़ोन डालें। बाद में उधार खोलकर पैसे आने पर पेमेंट दर्ज करें।",
+  "helpQ4": "अपना नाम, दुकान का नाम या UPI कैसे बदलें?",
+  "helpA4": "प्रोफ़ाइल > दुकान की जानकारी। मालिक का नाम होम पर अभिवादन में दिखता है।",
+  "helpQ5": "हिंदी या डार्क मोड कैसे लगाएँ?",
+  "helpA5": "प्रोफ़ाइल > भाषा और थीम। चुनाव इसी फ़ोन में याद रहता है।",
+  "billSearchHint": "नाम से आइटम खोजें",
+  "billRemoveItem": "आइटम हटाएँ",
+  "billPayAmount": "{amount} चुकाएँ",
+  "@billPayAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "productsFilterAll": "सभी",
+  "productsFilterOut": "स्टॉक खत्म",
+  "productOutBadge": "स्टॉक खत्म",
+  "productInBadge": "स्टॉक में"
 }

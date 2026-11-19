@@ -19,4 +19,11 @@ abstract class StoreRepository {
   /// Creates the store, the owner membership and the user's pointer to it in
   /// one atomic write. Needs an internet connection.
   Future<void> createStore(CreateStoreRequest request);
+
+  /// Changes the shop details (owner only). Fields left null are removed.
+  /// Needs an internet connection.
+  Future<void> updateDetails({
+    required String storeId,
+    required StoreDetailsInput details,
+  });
 }

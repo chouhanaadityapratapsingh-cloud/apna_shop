@@ -15,6 +15,13 @@ String storeFieldErrorText(AppLocalizations l10n, StoreFieldError error) {
       StoreValidators.cityMaxLength,
     ),
     StoreFieldError.invalidPhone => l10n.storePhoneInvalid,
+    StoreFieldError.addressTooLong => l10n.storeAddressTooLong(
+      StoreValidators.addressMaxLength,
+    ),
+    StoreFieldError.footerNoteTooLong => l10n.storeFooterTooLong(
+      StoreValidators.footerNoteMaxLength,
+    ),
+    StoreFieldError.upiInvalid => l10n.storeUpiInvalid,
   };
 }
 

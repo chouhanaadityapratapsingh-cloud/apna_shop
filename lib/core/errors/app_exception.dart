@@ -9,6 +9,15 @@ enum AppErrorType {
   userDisabled,
   permissionDenied,
   storeAlreadyExists,
+  duplicateBarcode,
+  productNotFound,
+  insufficientStock,
+
+  /// A product's selling price changed after it was added to the bill.
+  priceChanged,
+
+  /// A payment is more than the customer owes.
+  overpayment,
   unknown,
 }
 

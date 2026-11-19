@@ -1,80 +1,74 @@
 # Apna Shop
 
-Inventory and stock-management app for Indian kirana stores and small
-retailers. Flutter + Firebase, Android-first.
+Simple stock, billing and udhar (credit) app for Indian kirana stores.
+Built with Flutter and Firebase, in English and Hindi, and made for a real
+shopkeeper in Madhya Pradesh.
 
-Status: **M2 (store setup and roles)**.
+<!-- Add screenshots to docs/screenshots and uncomment:
+<p>
+  <img src="docs/screenshots/home.jpeg" width="180" />
+  <img src="docs/screenshots/billing.jpeg" width="180" />
+  <img src="docs/screenshots/products.jpeg" width="180" />
+  <img src="docs/screenshots/udhar.jpeg" width="180" />
+</p>
+-->
 
-- M1: theme, routing, email/password auth, typed errors, English/Hindi strings.
-- M2: create-store flow, store/member/role model, store-scoped repository,
-  Firestore security rules with tests.
+## What it does
 
-Products, stock movements, barcode scanning, offline sync, reports and team
-invites come in later milestones.
+**Billing**
+- Scan item barcodes (camera or from a photo), search by name or add by voice
+- Quantity steppers, kg / litre items, discount, cash / UPI / udhar split
+- PDF bills in 4 templates, with a UPI QR code for udhar bills
+- Works offline: bills are saved on the phone and sync by themselves when
+  the internet returns
 
-## Requirements
+**Stock**
+- Products with brand, category, unit, prices and low-stock alerts
+- Stock in / out with an append-only history (products are archived, never deleted)
+- Fast set-up: import from Excel / CSV, or from a photo of a bill or list (OCR)
+- Order list of low-stock items as a PDF, products CSV backup
 
-- Flutter 3.47.x (Dart 3.13.x)
-- Node.js and the Firebase CLI (`npm install -g firebase-tools`)
-- Java 21 or newer (only for the Firestore emulator that runs the rules tests)
-- A **separate** Firebase project for Apna Shop (do not reuse another app's)
+**Udhar**
+- Customer ledger with bills and payments, outstanding balance per customer
+- Record payments (cash / UPI) with quick amounts
 
-## Setup
+**Reports**
+- Sales, profit and payment split by day / week / month, CSV export
+
+**More**
+- Roles: owner, manager, staff (enforced by Firestore security rules)
+- English and Hindi, light and dark theme, set from Profile & settings
+- Time-based greeting with the owner's name
+
+## Tech
+
+| Area | Choice |
+| --- | --- |
+| UI | Flutter 3, Material 3, Inter font |
+| Architecture | Feature-first, MVVM |
+| State | Riverpod 3 |
+| Navigation | go_router (`StatefulShellRoute`) |
+| Backend | Firebase Auth + Cloud Firestore (Spark plan, no Cloud Functions) |
+| Scanning / OCR | `mobile_scanner`, `image_picker`, `google_mlkit_text_recognition` |
+| PDF | `pdf`, `printing` |
+| Localisation | `gen-l10n` with English and Hindi arb files |
+
+Design rules the code follows:
+- Money is stored as integer paise, never floating point
+- Stock changes are append-only movements, written in Firestore transactions
+- Integrity is enforced in `firestore.rules`, not only in the app
+
+## Run it
 
 ```
 flutter pub get
 flutter gen-l10n
+flutter run
 ```
 
-### Firebase
-
-1. Create a Firebase project (for example `apna-shop-dev`).
-2. Authentication: enable **Email/Password**.
-3. Firestore Database: create a database in **production mode**. Pick a
-   location close to your users (for example `asia-south1`). The location
-   cannot be changed later.
-4. Connect the app:
-   ```
-   firebase login
-   dart pub global activate flutterfire_cli
-   flutterfire configure
-   ```
-   Choose the Apna Shop project and the Android platform. This replaces the
-   placeholder `lib/firebase_options.dart` and adds `android/app/google-services.json`.
-5. Deploy the security rules (**required**, otherwise Create store fails):
-   ```
-   firebase deploy --only firestore:rules --project <your-project-id>
-   ```
-6. Run the app:
-   ```
-   flutter run
-   ```
-
-Until step 4 is done the app shows a "Firebase setup needed" screen instead of
-crashing.
-
-Never commit service-account keys or admin credentials. This repo needs none.
-
-## Data model (M2)
-
-```
-users/{uid}                         email, displayName, activeStoreId, createdAt
-stores/{storeId}                    name, ownerUid, currencyCode, timezone, city?, phone?, isActive, createdAt
-stores/{storeId}/members/{uid}      role (owner|manager|staff), status, permissions[], joinedAt
-```
-
-Creating a store writes all three documents in one atomic batch. The rules
-check that the store, the owner membership and the user's `activeStoreId`
-pointer arrive together, that the user becomes the owner, and that a user has
-only one store.
-
-The blueprint lists `createStore` as a Cloud Function. M2 uses a rules-checked
-batch instead, because Cloud Functions need the Blaze plan. Stock movements
-(M4) will need the Blaze plan.
-
-## Checks
-
-Flutter:
+You need your own Firebase project: create one, enable Email/Password sign-in
+and Firestore, run `flutterfire configure`, and deploy `firestore.rules` and
+`firestore.indexes.json`.
 
 ```
 dart format .
@@ -82,25 +76,11 @@ flutter analyze
 flutter test
 ```
 
-Firestore rules tests (run from the project root; needs Java and the Firebase CLI):
+## Build an APK
 
-```
-cd firestore_tests
-npm install --save-dev @firebase/rules-unit-testing firebase
-cd ..
-firebase emulators:exec --only firestore --project demo-apna-shop "npm --prefix firestore_tests test"
-```
+See [RELEASE.md](RELEASE.md).
 
-## Known limitations (M2)
+## Status
 
-- Creating a store needs an internet connection (by design: it is online-only).
-- The first sign-in on a new device needs an internet connection so the app
-  can find the user's store. Offline caching arrives with M6.
-- Joining an existing store (team invites) is not built yet. Only the owner
-  who creates a store has access to it.
-- Store settings editing and closing a store are not built yet; the rules
-  block those writes for now.
-- The preferred-language setting is not stored yet. The app follows the device
-  language (English or Hindi).
-- Products, Activity and Reports tabs are labelled "Not available yet".
-- Hindi strings should be reviewed by a native speaker on a real device.
+In use by a local kirana store. Ideas for later: product expiry dates,
+multiple stores, barcode label printing.

@@ -1,5 +1,7 @@
 import 'package:apna_shop/app/app.dart';
 import 'package:apna_shop/app/setup_required_app.dart';
+import 'package:apna_shop/features/settings/data/settings_store.dart';
+import 'package:apna_shop/features/settings/presentation/settings_providers.dart';
 import 'package:apna_shop/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -19,5 +21,11 @@ Future<void> main() async {
     return;
   }
 
-  runApp(const ProviderScope(child: ApnaShopApp()));
+  final settings = await PrefsSettingsStore().load();
+  runApp(
+    ProviderScope(
+      overrides: [initialSettingsProvider.overrideWithValue(settings)],
+      child: const ApnaShopApp(),
+    ),
+  );
 }

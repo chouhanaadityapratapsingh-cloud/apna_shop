@@ -24,11 +24,35 @@ final activeStoreIdProvider = StreamProvider<String?>((ref) {
 final storeSetupStatusProvider = Provider<StoreSetupStatus>((ref) {
   final storeId = ref.watch(activeStoreIdProvider);
   if (storeId.hasError) return StoreSetupStatus.error;
-  if (!storeId.hasValue) return StoreSetupStatus.loading;
+  // While the stream restarts (for example right after sign-in) Riverpod
+  // keeps the old value, so check isLoading too. Without this the
+  // create-store page flashed for a few seconds after every login.
+  if (storeId.isLoading || !storeId.hasValue) return StoreSetupStatus.loading;
   return storeId.value == null
       ? StoreSetupStatus.missing
       : StoreSetupStatus.ready;
 });
+
+/// The owner's own name (shown in the greeting), kept in the user's profile.
+final ownerNameProvider = StreamProvider<String?>((ref) {
+  final uid = ref.watch(authStateProvider.select((state) => state.value?.uid));
+  if (uid == null) return Stream<String?>.value(null);
+  return FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .snapshots()
+      .map((snapshot) {
+        final name = (snapshot.data()?['displayName'] as String?)?.trim();
+        return (name == null || name.isEmpty) ? null : name;
+      });
+});
+
+/// Saves the owner's name. Kept apart from the store repository on purpose.
+Future<void> saveOwnerName(String uid, String name) => FirebaseFirestore
+    .instance
+    .collection('users')
+    .doc(uid)
+    .set(<String, Object?>{'displayName': name}, SetOptions(merge: true));
 
 final activeStoreProvider = StreamProvider<Store?>((ref) {
   final storeId = ref.watch(activeStoreIdProvider).value;

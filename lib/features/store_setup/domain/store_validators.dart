@@ -4,6 +4,9 @@ enum StoreFieldError {
   nameTooLong,
   cityTooLong,
   invalidPhone,
+  addressTooLong,
+  footerNoteTooLong,
+  upiInvalid,
 }
 
 abstract final class StoreValidators {
@@ -11,10 +14,14 @@ abstract final class StoreValidators {
   static const int nameMinLength = 2;
   static const int nameMaxLength = 80;
   static const int cityMaxLength = 80;
+  static const int addressMaxLength = 120;
+  static const int footerNoteMaxLength = 80;
+  static const int upiMaxLength = 60;
 
   static final RegExp _whitespace = RegExp(r'\s+');
   static final RegExp _separators = RegExp(r'[\s\-()]');
   static final RegExp _indianMobile = RegExp(r'^[6-9]\d{9}$');
+  static final RegExp _upiId = RegExp(r'^[A-Za-z0-9._-]{2,}@[A-Za-z]{2,}$');
 
   /// Trims and collapses repeated spaces.
   static String normalizeText(String? value) {
@@ -60,5 +67,29 @@ abstract final class StoreValidators {
     return _indianMobile.hasMatch(normalized)
         ? null
         : StoreFieldError.invalidPhone;
+  }
+
+  /// Address is optional.
+  static StoreFieldError? address(String? value) {
+    return normalizeText(value).length > addressMaxLength
+        ? StoreFieldError.addressTooLong
+        : null;
+  }
+
+  /// Footer note is optional.
+  static StoreFieldError? footerNote(String? value) {
+    return normalizeText(value).length > footerNoteMaxLength
+        ? StoreFieldError.footerNoteTooLong
+        : null;
+  }
+
+  /// UPI id is optional; when present it looks like name@bank.
+  static StoreFieldError? upiId(String? value) {
+    final text = (value ?? '').trim();
+    if (text.isEmpty) return null;
+    if (text.length > upiMaxLength || !_upiId.hasMatch(text)) {
+      return StoreFieldError.upiInvalid;
+    }
+    return null;
   }
 }

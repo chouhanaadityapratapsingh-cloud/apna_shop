@@ -48,3 +48,6 @@ app.*.map.json
 .widget_preview/
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
+android/key.properties
+*.jks
+*.keystore

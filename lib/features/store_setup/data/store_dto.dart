@@ -13,6 +13,9 @@ Store storeFromMap(String id, Map<String, dynamic> data) {
     timezone: (data['timezone'] as String?) ?? 'Asia/Kolkata',
     city: data['city'] as String?,
     phone: data['phone'] as String?,
+    address: data['address'] as String?,
+    footerNote: data['footerNote'] as String?,
+    upiId: data['upiId'] as String?,
     isActive: (data['isActive'] as bool?) ?? true,
     createdAt: _toDate(data['createdAt']),
   );

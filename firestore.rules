@@ -1,11 +1,28 @@
 rules_version = '2';
 
-// Apna Shop - Firestore security rules (M2: stores, members, users).
+// Apna Shop - Firestore security rules (R1: users, stores, members,
+// products, barcode reservations, stock movements, sales, bill counter,
+// customer udhar ledger).
 //
 // Default is DENY: any path without an explicit rule below is closed.
-// Products, stock movements, sales and alerts stay closed until M3/M4 add
-// their own rules and tests. Stock quantity must only ever change through a
-// trusted backend function (M4), never from the client.
+// Alerts stay closed until a later milestone adds their rules.
+//
+// Stock (Spark plan, no Cloud Functions): product quantity can change only in
+// the same batch/transaction that creates one immutable stockMovements
+// document describing the change. The rules check that the movement's
+// quantityBefore equals the stored quantity, that quantityAfter is the new
+// quantity, and that the arithmetic matches the movement type, so the
+// quantity can never be edited directly and never goes negative.
+//
+// Billing (Spark plan): a sale stores its lines as a MAP keyed by product id.
+// Each sold product is updated in the same transaction and the rule checks,
+// with ONE getAfter(sale) per line, that the new quantity equals the old one
+// minus that line's quantity, and that the line's price is the product's
+// current selling price. Firestore rules allow only 20 document-access calls
+// per transaction, so a bill is limited to 15 lines.
+// Honest limits: rules cannot add up line prices, so the bill total is only
+// checked against subtotal/discount/payment, not against the lines; and they
+// cannot force that every line has a stock update.
 
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -24,6 +41,34 @@ service cloud.firestore {
       return /databases/$(database)/documents/stores/$(storeId)/members/$(uid);
     }
 
+    function productPath(storeId, productId) {
+      return /databases/$(database)/documents/stores/$(storeId)/products/$(productId);
+    }
+
+    function barcodePath(storeId, barcode) {
+      return /databases/$(database)/documents/stores/$(storeId)/barcodes/$(barcode);
+    }
+
+    function movementPath(storeId, movementId) {
+      return /databases/$(database)/documents/stores/$(storeId)/stockMovements/$(movementId);
+    }
+
+    function salePath(storeId, saleId) {
+      return /databases/$(database)/documents/stores/$(storeId)/sales/$(saleId);
+    }
+
+    function counterPath(storeId) {
+      return /databases/$(database)/documents/stores/$(storeId)/meta/billing;
+    }
+
+    function customerPath(storeId, phone) {
+      return /databases/$(database)/documents/stores/$(storeId)/customers/$(phone);
+    }
+
+    function entryPath(storeId, phone, entryId) {
+      return /databases/$(database)/documents/stores/$(storeId)/customers/$(phone)/entries/$(entryId);
+    }
+
     function userPath(uid) {
       return /databases/$(database)/documents/users/$(uid);
     }
@@ -34,6 +79,50 @@ service cloud.firestore {
         && exists(memberPath(storeId, request.auth.uid))
         && get(memberPath(storeId, request.auth.uid)).data.status == 'active';
     }
+
+    // Owners and managers may edit products. Staff only when the owner has
+    // delegated 'editProducts' to them (blueprint section 3.1).
+    function canEditProducts(storeId) {
+      return isActiveMember(storeId)
+        && (get(memberPath(storeId, request.auth.uid)).data.role in ['owner', 'manager']
+            || (get(memberPath(storeId, request.auth.uid)).data.role == 'staff'
+                && 'editProducts' in get(memberPath(storeId, request.auth.uid)).data.permissions));
+    }
+
+    // Owners and managers may adjust stock (a recount). Staff only when the
+    // owner has delegated 'adjustStock'. Plain stock in/out is open to every
+    // active member (blueprint section 3.1).
+    function canAdjustStock(storeId) {
+      return isActiveMember(storeId)
+        && (get(memberPath(storeId, request.auth.uid)).data.role in ['owner', 'manager']
+            || (get(memberPath(storeId, request.auth.uid)).data.role == 'staff'
+                && 'adjustStock' in get(memberPath(storeId, request.auth.uid)).data.permissions));
+    }
+
+    // Owners and managers see the whole history; staff only their own.
+    function canViewAllMovements(storeId) {
+      return isActiveMember(storeId)
+        && get(memberPath(storeId, request.auth.uid)).data.role in ['owner', 'manager'];
+    }
+
+    // Shop details edited by the owner. Everything else (owner, currency,
+    // timezone, createdAt, isActive) can never change here.
+    function validStoreDetails() {
+      let d = request.resource.data;
+      return d.diff(resource.data).affectedKeys().hasOnly([
+          'name', 'city', 'phone', 'address', 'footerNote', 'upiId'
+        ])
+        && d.name is string && d.name.size() >= 2 && d.name.size() <= 80
+        && (!('city' in d) || (d.city is string && d.city.size() <= 80))
+        && (!('phone' in d) || (d.phone is string && d.phone.matches('^[6-9][0-9]{9}$')))
+        && (!('address' in d) || (d.address is string && d.address.size() >= 1 && d.address.size() <= 120))
+        && (!('footerNote' in d) || (d.footerNote is string && d.footerNote.size() >= 1 && d.footerNote.size() <= 80))
+        && (!('upiId' in d)
+            || (d.upiId is string && d.upiId.size() <= 60
+                && d.upiId.matches('^[A-Za-z0-9._-]{2,}@[A-Za-z]{2,}$')));
+    }
+
+    // ---------- store creation ----------
 
     // Validates the store document written when a store is created.
     // The owner's member document must be written in the SAME batch.
@@ -92,6 +181,320 @@ service cloud.firestore {
                 && getAfter(memberPath(d.activeStoreId, uid)).data.status == 'active'));
     }
 
+    // ---------- products ----------
+
+    // Field checks shared by create and update.
+    function validProductFields(d) {
+      return d.name is string && d.name.size() >= 2 && d.name.size() <= 80
+        && d.normalizedName is string
+        && d.normalizedName.size() >= 2 && d.normalizedName.size() <= 80
+        && d.unit in ['piece', 'packet', 'box', 'bottle', 'pack', 'kg', 'litre']
+        && d.purchasePricePaise is int
+        && d.purchasePricePaise >= 0 && d.purchasePricePaise <= 1000000000
+        && d.sellingPricePaise is int
+        && d.sellingPricePaise >= 0 && d.sellingPricePaise <= 1000000000
+        && d.lowStockThreshold is int
+        && d.lowStockThreshold >= 0 && d.lowStockThreshold <= 1000000
+        && d.isActive is bool
+        && (!('barcode' in d) || (d.barcode is string && d.barcode.matches('^[0-9A-Z-]{4,32}$')))
+        && (!('sku' in d) || (d.sku is string && d.sku.size() >= 1 && d.sku.size() <= 40))
+        && (!('category' in d) || (d.category is string && d.category.size() >= 1 && d.category.size() <= 40))
+        && (!('brand' in d) || (d.brand is string && d.brand.size() >= 1 && d.brand.size() <= 40))
+        // Pictures are only linked from the public product list, never
+        // uploaded or pointed at arbitrary sites.
+        && (!('imageUrl' in d)
+            || (d.imageUrl is string && d.imageUrl.size() <= 300
+                && d.imageUrl.matches('^https://images\\.openfoodfacts\\.org/.+')));
+    }
+
+    function validNewProduct(storeId, productId) {
+      let d = request.resource.data;
+      return d.keys().hasOnly([
+          'name', 'normalizedName', 'barcode', 'sku', 'category', 'brand', 'imageUrl', 'unit',
+          'purchasePricePaise', 'sellingPricePaise', 'openingQuantity',
+          'currentQuantity', 'lowStockThreshold', 'isActive',
+          'createdBy', 'createdAt', 'updatedAt'
+        ])
+        && d.keys().hasAll([
+          'name', 'normalizedName', 'unit', 'purchasePricePaise',
+          'sellingPricePaise', 'openingQuantity', 'currentQuantity',
+          'lowStockThreshold', 'isActive', 'createdBy', 'createdAt', 'updatedAt'
+        ])
+        && validProductFields(d)
+        && d.openingQuantity is int
+        && d.openingQuantity >= 0 && d.openingQuantity <= 10000000
+        // The balance can only start at the opening quantity.
+        && d.currentQuantity == d.openingQuantity
+        && d.isActive == true
+        && d.createdBy == request.auth.uid
+        && d.createdAt == request.time
+        && d.updatedAt == request.time
+        // A barcode must be reserved in the same batch, and must be free.
+        && (!('barcode' in d)
+            || (!exists(barcodePath(storeId, d.barcode))
+                && existsAfter(barcodePath(storeId, d.barcode))
+                && getAfter(barcodePath(storeId, d.barcode)).data.productId == productId));
+    }
+
+    // Edits and archiving. Quantity fields and creation info never change.
+    function validProductUpdate(storeId, productId) {
+      let d = request.resource.data;
+      let o = resource.data;
+      let oldHas = 'barcode' in o;
+      let newHas = 'barcode' in d;
+      let unchanged = oldHas && newHas && o.barcode == d.barcode;
+      // An active product with a barcode must hold the reservation.
+      let keepsReservation = d.isActive == true && newHas;
+      return d.keys().hasOnly([
+          'name', 'normalizedName', 'barcode', 'sku', 'category', 'brand', 'imageUrl', 'unit',
+          'purchasePricePaise', 'sellingPricePaise', 'openingQuantity',
+          'currentQuantity', 'lowStockThreshold', 'isActive',
+          'createdBy', 'createdAt', 'updatedAt', 'lastMovementId', 'lastSaleId'
+        ])
+        && d.keys().hasAll([
+          'name', 'normalizedName', 'unit', 'purchasePricePaise',
+          'sellingPricePaise', 'openingQuantity', 'currentQuantity',
+          'lowStockThreshold', 'isActive', 'createdBy', 'createdAt', 'updatedAt'
+        ])
+        && validProductFields(d)
+        // Counted goods may switch between counted units. Kg and litre never
+        // change: their stored number means grams / millilitres.
+        && (d.unit == o.unit
+            || (!(d.unit in ['kg', 'litre']) && !(o.unit in ['kg', 'litre'])))
+        // Edits never touch the quantity or the stock-movement pointer.
+        && ('lastMovementId' in o) == ('lastMovementId' in d)
+        && (!('lastMovementId' in d) || d.lastMovementId == o.lastMovementId)
+        && ('lastSaleId' in o) == ('lastSaleId' in d)
+        && (!('lastSaleId' in d) || d.lastSaleId == o.lastSaleId)
+        && d.currentQuantity == o.currentQuantity
+        && d.openingQuantity == o.openingQuantity
+        && d.createdBy == o.createdBy
+        && d.createdAt == o.createdAt
+        && d.updatedAt == request.time
+        // The old reservation must be released when the barcode is changed
+        // or removed, or when the product is archived.
+        && (!oldHas
+            || (unchanged && keepsReservation)
+            || !existsAfter(barcodePath(storeId, o.barcode)))
+        // A new or changed barcode must be free and reserved for this product.
+        && (!keepsReservation
+            || (unchanged && existsAfter(barcodePath(storeId, d.barcode)))
+            || (!unchanged
+                && !exists(barcodePath(storeId, d.barcode))
+                && existsAfter(barcodePath(storeId, d.barcode))
+                && getAfter(barcodePath(storeId, d.barcode)).data.productId == productId));
+    }
+
+    // A stock change on a product: only the quantity, the pointer to the
+    // movement that explains it, and updatedAt change. The movement must be
+    // created in the same batch and agree with the old and new quantity.
+    function validStockUpdate(storeId, productId) {
+      let d = request.resource.data;
+      let o = resource.data;
+      return d.diff(o).affectedKeys().hasOnly(['currentQuantity', 'lastMovementId', 'updatedAt'])
+        && d.lastMovementId is string
+        && d.updatedAt == request.time
+        && d.currentQuantity is int
+        && d.currentQuantity >= 0 && d.currentQuantity <= 10000000
+        // The movement is new (a movement id can never be reused).
+        && !exists(movementPath(storeId, d.lastMovementId))
+        && existsAfter(movementPath(storeId, d.lastMovementId))
+        && getAfter(movementPath(storeId, d.lastMovementId)).data.productId == productId
+        && getAfter(movementPath(storeId, d.lastMovementId)).data.quantityBefore == o.currentQuantity
+        && getAfter(movementPath(storeId, d.lastMovementId)).data.quantityAfter == d.currentQuantity;
+    }
+
+    function validMovement(storeId, movementId) {
+      let d = request.resource.data;
+      let reasons = d.type == 'stockIn' ? ['purchase', 'returned', 'correction', 'other']
+        : d.type == 'stockOut' ? ['sale', 'damaged', 'expired', 'correction', 'other']
+        : ['correction', 'damaged', 'expired', 'other'];
+      return d.keys().hasOnly([
+          'productId', 'productName', 'unit', 'type', 'quantity',
+          'quantityBefore', 'quantityAfter', 'reason', 'note',
+          'createdBy', 'createdAt'
+        ])
+        && d.keys().hasAll([
+          'productId', 'productName', 'unit', 'type', 'quantity',
+          'quantityBefore', 'quantityAfter', 'reason', 'createdBy', 'createdAt'
+        ])
+        && d.productId is string
+        && d.productName is string && d.productName.size() >= 1 && d.productName.size() <= 80
+        && d.unit in ['piece', 'packet', 'box', 'bottle', 'pack', 'kg', 'litre']
+        && d.type in ['stockIn', 'stockOut', 'adjustment']
+        && d.reason in reasons
+        && d.quantity is int && d.quantity >= 1 && d.quantity <= 10000000
+        && d.quantityBefore is int && d.quantityBefore >= 0 && d.quantityBefore <= 10000000
+        && d.quantityAfter is int && d.quantityAfter >= 0 && d.quantityAfter <= 10000000
+        && ((d.type == 'stockIn' && d.quantityAfter == d.quantityBefore + d.quantity)
+            || (d.type == 'stockOut' && d.quantityAfter == d.quantityBefore - d.quantity)
+            || (d.type == 'adjustment'
+                && ((d.quantityAfter > d.quantityBefore && d.quantity == d.quantityAfter - d.quantityBefore)
+                    || (d.quantityAfter < d.quantityBefore && d.quantity == d.quantityBefore - d.quantityAfter))))
+        && (!('note' in d) || (d.note is string && d.note.size() >= 1 && d.note.size() <= 200))
+        && d.createdBy == request.auth.uid
+        && d.createdAt == request.time
+        // The product must be active, hold the quantity the movement started
+        // from, and be updated in the same batch to the quantity it ends at.
+        && exists(productPath(storeId, d.productId))
+        && get(productPath(storeId, d.productId)).data.isActive == true
+        && get(productPath(storeId, d.productId)).data.currentQuantity == d.quantityBefore
+        && existsAfter(productPath(storeId, d.productId))
+        && getAfter(productPath(storeId, d.productId)).data.currentQuantity == d.quantityAfter
+        && getAfter(productPath(storeId, d.productId)).data.lastMovementId == movementId;
+    }
+
+    // A sale takes stock out of a product: only quantity, the pointer to the
+    // sale and updatedAt change. The sale must be created in the same
+    // transaction (createdAt == request.time proves it is new), by the same
+    // user, and must contain this product at its current selling price.
+    function validSaleUpdate(storeId, productId) {
+      let d = request.resource.data;
+      let o = resource.data;
+      let sale = getAfter(salePath(storeId, d.lastSaleId)).data;
+      let item = sale.items[productId];
+      return d.diff(o).affectedKeys().hasOnly(['currentQuantity', 'lastSaleId', 'updatedAt'])
+        && d.diff(o).affectedKeys().hasAll(['currentQuantity', 'lastSaleId', 'updatedAt'])
+        && d.lastSaleId is string
+        && d.updatedAt == request.time
+        && sale.createdBy == request.auth.uid
+        && sale.createdAt == request.time
+        && productId in sale.items
+        && item.keys().hasOnly(['name', 'brand', 'unit', 'quantity', 'unitPricePaise', 'costPaise', 'position'])
+        && item.quantity is int && item.quantity >= 1
+        && item.unitPricePaise == o.sellingPricePaise
+        // What the product cost is recorded, so profit can be reported later.
+        && item.costPaise is int && item.costPaise == o.purchasePricePaise
+        && item.unit == o.unit
+        && item.name == o.name
+        && d.currentQuantity == o.currentQuantity - item.quantity
+        && d.currentQuantity >= 0;
+    }
+
+    // The sale document. Line details are checked per product (see
+    // validSaleUpdate); here only the bill-level numbers.
+    function validSale(storeId, saleId) {
+      let d = request.resource.data;
+      return d.keys().hasOnly([
+          'billNumber', 'items', 'itemCount', 'subtotalPaise', 'discountPaise',
+          'totalPaise', 'cashPaise', 'upiPaise', 'creditPaise',
+          'customerName', 'customerPhone', 'createdBy', 'createdAt'
+        ])
+        && d.keys().hasAll([
+          'billNumber', 'items', 'itemCount', 'subtotalPaise', 'discountPaise',
+          'totalPaise', 'cashPaise', 'upiPaise', 'creditPaise', 'createdBy', 'createdAt'
+        ])
+        && d.billNumber is int && d.billNumber >= 1
+        && d.items is map && d.items.size() >= 1 && d.items.size() <= 15
+        && d.itemCount is int && d.itemCount >= d.items.size() && d.itemCount <= 100000
+        && d.subtotalPaise is int && d.subtotalPaise >= 0 && d.subtotalPaise <= 1000000000
+        && d.discountPaise is int && d.discountPaise >= 0 && d.discountPaise <= d.subtotalPaise
+        && d.totalPaise is int && d.totalPaise == d.subtotalPaise - d.discountPaise
+        && d.cashPaise is int && d.cashPaise >= 0
+        && d.upiPaise is int && d.upiPaise >= 0
+        && d.creditPaise is int && d.creditPaise >= 0
+        && d.cashPaise + d.upiPaise + d.creditPaise == d.totalPaise
+        && d.createdBy == request.auth.uid
+        && d.createdAt == request.time
+        // Udhar needs a customer, and writes the customer's ledger entry
+        // (whose id is the sale id) in the same transaction.
+        && (d.creditPaise == 0
+            ? (!('customerPhone' in d) || d.customerPhone.matches('^[6-9][0-9]{9}$'))
+            : ('customerName' in d && d.customerName is string
+                && d.customerName.size() >= 2 && d.customerName.size() <= 60
+                && 'customerPhone' in d && d.customerPhone is string
+                && d.customerPhone.matches('^[6-9][0-9]{9}$')
+                && existsAfter(entryPath(storeId, d.customerPhone, saleId))))
+        && (!('customerName' in d) || (d.customerName is string && d.customerName.size() <= 60))
+        // Bill numbers: this sale must be the one the counter now points at.
+        && existsAfter(counterPath(storeId))
+        && getAfter(counterPath(storeId)).data.lastBillNumber == d.billNumber
+        && getAfter(counterPath(storeId)).data.lastSaleId == saleId;
+    }
+
+    // The per-shop bill counter moves forward by exactly one, together with
+    // the sale that uses that number.
+    function validCounter(storeId, previous) {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['lastBillNumber', 'lastSaleId', 'updatedAt'])
+        && d.keys().hasAll(['lastBillNumber', 'lastSaleId', 'updatedAt'])
+        && d.lastBillNumber is int && d.lastBillNumber == previous + 1
+        && d.lastSaleId is string
+        && d.updatedAt == request.time
+        && existsAfter(salePath(storeId, d.lastSaleId))
+        && getAfter(salePath(storeId, d.lastSaleId)).data.billNumber == d.lastBillNumber
+        && getAfter(salePath(storeId, d.lastSaleId)).data.createdBy == request.auth.uid;
+    }
+
+    // Customer ledger summary. The balance changes only together with a new
+    // ledger entry that explains the change.
+    function validCustomer(storeId, phone, previous) {
+      let d = request.resource.data;
+      let entry = getAfter(entryPath(storeId, phone, d.lastEntryId)).data;
+      return d.keys().hasOnly(['name', 'phone', 'balancePaise', 'lastEntryId', 'updatedAt'])
+        && d.keys().hasAll(['name', 'phone', 'balancePaise', 'lastEntryId', 'updatedAt'])
+        && d.phone == phone
+        && phone.matches('^[6-9][0-9]{9}$')
+        && d.name is string && d.name.size() >= 2 && d.name.size() <= 60
+        && d.balancePaise is int && d.balancePaise >= 0 && d.balancePaise <= 1000000000
+        && d.lastEntryId is string
+        && d.updatedAt == request.time
+        && existsAfter(entryPath(storeId, phone, d.lastEntryId))
+        && entry.createdAt == request.time
+        && entry.createdBy == request.auth.uid
+        && (entry.type == 'credit'
+            ? d.balancePaise == previous + entry.amountPaise
+            : d.balancePaise == previous - entry.amountPaise);
+    }
+
+    function validEntry(storeId, phone, entryId) {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['type', 'amountPaise', 'saleId', 'method', 'note', 'createdBy', 'createdAt'])
+        && d.keys().hasAll(['type', 'amountPaise', 'createdBy', 'createdAt'])
+        && d.type in ['credit', 'payment']
+        && d.amountPaise is int && d.amountPaise >= 1 && d.amountPaise <= 1000000000
+        && d.createdBy == request.auth.uid
+        && d.createdAt == request.time
+        && (!('note' in d) || (d.note is string && d.note.size() <= 200))
+        && existsAfter(customerPath(storeId, phone))
+        && getAfter(customerPath(storeId, phone)).data.lastEntryId == entryId
+        && (d.type == 'credit'
+            // A credit entry belongs to the sale with the same id.
+            ? (entryId == d.saleId
+               && existsAfter(salePath(storeId, d.saleId))
+               && getAfter(salePath(storeId, d.saleId)).data.creditPaise == d.amountPaise
+               && getAfter(salePath(storeId, d.saleId)).data.customerPhone == phone
+               && !('method' in d))
+            // A payment received: no bill, and says how it was paid. The
+            // customer's balance goes down by exactly this amount (checked
+            // in validCustomer) and cannot go below zero.
+            : (!('saleId' in d) && d.method in ['cash', 'upi']));
+    }
+
+    // A reservation is created together with the product (or the edit) that
+    // owns that barcode.
+    function validBarcodeClaim(storeId, barcode) {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['productId', 'createdAt'])
+        && d.keys().hasAll(['productId', 'createdAt'])
+        && d.productId is string
+        && d.createdAt == request.time
+        && existsAfter(productPath(storeId, d.productId))
+        && getAfter(productPath(storeId, d.productId)).data.isActive == true
+        && 'barcode' in getAfter(productPath(storeId, d.productId)).data
+        && getAfter(productPath(storeId, d.productId)).data.barcode == barcode;
+    }
+
+    // A reservation can be deleted only when its product no longer uses it
+    // (barcode changed or removed, or product archived) after the batch.
+    function barcodeReleased(storeId, barcode) {
+      let productAfter = getAfter(productPath(storeId, resource.data.productId)).data;
+      return existsAfter(productPath(storeId, resource.data.productId))
+        && (!('barcode' in productAfter)
+            || productAfter.barcode != barcode
+            || productAfter.isActive == false);
+    }
+
     // ---------- users ----------
 
     match /users/{uid} {
@@ -114,8 +517,12 @@ service cloud.firestore {
 
       allow create: if signedIn() && validNewStore(storeId);
 
-      // Store settings editing and closing arrive in a later milestone.
-      allow update, delete: if false;
+      // Shop details: only the owner, only these fields. Closing a store
+      // arrives in a later milestone.
+      allow update: if isActiveMember(storeId)
+        && request.auth.uid == resource.data.ownerUid
+        && validStoreDetails();
+      allow delete: if false;
 
       match /members/{memberId} {
         allow read: if isActiveMember(storeId);
@@ -131,7 +538,110 @@ service cloud.firestore {
         allow update, delete: if false;
       }
 
-      // products, stockMovements, sales, alerts: no rule yet = denied.
+      match /products/{productId} {
+        allow read: if isActiveMember(storeId);
+
+        allow create: if canEditProducts(storeId)
+          && validNewProduct(storeId, productId);
+
+        // Archived products are frozen.
+        allow update: if resource.data.isActive == true
+          && ((canEditProducts(storeId) && validProductUpdate(storeId, productId))
+              // Who may record which kind of movement is checked on the
+              // movement document itself.
+              || (isActiveMember(storeId) && validStockUpdate(storeId, productId))
+              // A bill: the sale's own rule checks that the user is an active
+              // member, and that the sale is new and created by this user.
+              || (isActiveMember(storeId) && validSaleUpdate(storeId, productId)));
+
+        // Products with history are archived, never deleted.
+        allow delete: if false;
+      }
+
+      // One document per barcode in use: this is what makes barcodes unique
+      // per store, because Firestore has no unique constraints.
+      match /barcodes/{barcode} {
+        allow read: if isActiveMember(storeId);
+
+        allow create: if canEditProducts(storeId)
+          && validBarcodeClaim(storeId, barcode);
+
+        allow update: if false;
+
+        allow delete: if canEditProducts(storeId)
+          && barcodeReleased(storeId, barcode);
+      }
+
+      // Immutable stock history. Created only together with the product
+      // quantity change it describes.
+      match /stockMovements/{movementId} {
+        // A single get may find nothing (resource == null): that is how a
+        // retry checks whether its movement was already recorded.
+        allow get: if canViewAllMovements(storeId)
+          || (isActiveMember(storeId)
+              && (resource == null || resource.data.createdBy == request.auth.uid));
+
+        // Lists: staff must filter by their own uid.
+        allow list: if canViewAllMovements(storeId)
+          || (isActiveMember(storeId) && resource.data.createdBy == request.auth.uid);
+
+        allow create: if isActiveMember(storeId)
+          && validMovement(storeId, movementId)
+          && (request.resource.data.type != 'adjustment' || canAdjustStock(storeId));
+
+        allow update, delete: if false;
+      }
+
+      // Bills. Created only together with the stock changes, the bill counter
+      // and (for udhar) the customer ledger entry. Never edited or deleted.
+      match /sales/{saleId} {
+        allow get: if canViewAllMovements(storeId)
+          || (isActiveMember(storeId)
+              && (resource == null || resource.data.createdBy == request.auth.uid));
+
+        allow list: if canViewAllMovements(storeId)
+          || (isActiveMember(storeId) && resource.data.createdBy == request.auth.uid);
+
+        allow create: if isActiveMember(storeId) && validSale(storeId, saleId);
+
+        allow update, delete: if false;
+      }
+
+      match /meta/billing {
+        allow read: if isActiveMember(storeId);
+
+        allow create: if isActiveMember(storeId) && validCounter(storeId, 0);
+
+        allow update: if isActiveMember(storeId)
+          && validCounter(storeId, resource.data.lastBillNumber);
+
+        allow delete: if false;
+      }
+
+      // Udhar ledger: one document per customer phone number.
+      match /customers/{phone} {
+        allow read: if isActiveMember(storeId);
+
+        allow create: if isActiveMember(storeId)
+          && validCustomer(storeId, phone, 0);
+
+        allow update: if isActiveMember(storeId)
+          && validCustomer(storeId, phone, resource.data.balancePaise);
+
+        allow delete: if false;
+
+        match /entries/{entryId} {
+          allow read: if isActiveMember(storeId);
+
+          // A retry checks whether its entry already exists (get on a
+          // missing document), which is covered by the read rule above.
+          allow create: if isActiveMember(storeId) && validEntry(storeId, phone, entryId);
+
+          allow update, delete: if false;
+        }
+      }
+
+      // alerts: no rule yet = denied.
     }
   }
 }

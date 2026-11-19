@@ -107,5 +107,834 @@
         "type": "String"
       }
     }
-  }
+  },
+  "productsSearchHint": "Search by name, SKU or barcode",
+  "productsLowStockFilter": "Low stock only",
+  "productsEmptyTitle": "No products yet",
+  "productsEmptyBody": "Add your first product to start tracking stock.",
+  "productsNoMatchTitle": "No matching products",
+  "productsNoMatchBody": "Try a different name, or clear the filters.",
+  "clearFilters": "Clear filters",
+  "productsLoadErrorTitle": "Couldn't load products",
+  "addProduct": "Add product",
+  "editProduct": "Edit product",
+  "lowStockBadge": "Low stock",
+  "lowStockLine": "Only {quantity} left",
+  "@lowStockLine": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      }
+    }
+  },
+  "detailsInStock": "In stock",
+  "detailsSellingPrice": "Selling price",
+  "detailsPurchasePrice": "Purchase price",
+  "detailsLowStockAt": "Low stock at",
+  "detailsCategory": "Category",
+  "detailsBarcode": "Barcode",
+  "detailsSku": "SKU",
+  "productNotFound": "This product no longer exists.",
+  "productArchivedNote": "This product is archived.",
+  "archiveProduct": "Archive product",
+  "archiveConfirmTitle": "Archive this product?",
+  "archiveConfirmBody": "It will disappear from your list. Its history is kept, and its barcode can be used again.",
+  "archiveAction": "Archive",
+  "productNameLabel": "Product name",
+  "productBarcodeLabel": "Barcode (optional)",
+  "productSkuLabel": "SKU (optional)",
+  "productCategoryLabel": "Category (optional)",
+  "productUnitLabel": "Unit",
+  "purchasePriceLabel": "Purchase price in ₹ (optional)",
+  "sellingPriceLabel": "Selling price in ₹",
+  "openingQuantityLabel": "Opening stock",
+  "lowStockThresholdLabel": "Warn me when stock is at or below",
+  "saveProduct": "Save product",
+  "productOnlineNote": "Saving needs an internet connection.",
+  "quantityEditNote": "Stock quantity cannot be edited here. Use Stock in, Stock out or Adjust stock on the product page.",
+  "productNameTooShort": "Name must be at least {min} characters",
+  "@productNameTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "productNameTooLong": "Name can be at most {max} characters",
+  "@productNameTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "productBarcodeInvalid": "Use 4 to 32 letters, numbers or dashes",
+  "productSkuTooLong": "SKU can be at most {max} characters",
+  "@productSkuTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "productCategoryTooLong": "Category can be at most {max} characters",
+  "@productCategoryTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "priceInvalid": "Enter a price like 25 or 25.50",
+  "wholeNumberInvalid": "Enter a whole number from 0 to {max}",
+  "@wholeNumberInvalid": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "errorDuplicateBarcode": "Another product in this store already uses this barcode.",
+  "unitPiece": "Piece",
+  "unitPacket": "Packet",
+  "unitBox": "Box",
+  "unitBottle": "Bottle",
+  "unitPack": "Pack",
+  "quantityPiece": "{count, plural, =1{1 piece} other{{count} pieces}}",
+  "@quantityPiece": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "quantityPacket": "{count, plural, =1{1 packet} other{{count} packets}}",
+  "@quantityPacket": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "quantityBox": "{count, plural, =1{1 box} other{{count} boxes}}",
+  "@quantityBox": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "quantityBottle": "{count, plural, =1{1 bottle} other{{count} bottles}}",
+  "@quantityBottle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "quantityPack": "{count, plural, =1{1 pack} other{{count} packs}}",
+  "@quantityPack": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "stockIn": "Stock in",
+  "stockOut": "Stock out",
+  "stockAdjust": "Adjust stock",
+  "stockHistoryTitle": "Stock history",
+  "stockHistoryEmpty": "No stock movements yet.",
+  "stockAmountLabel": "Quantity",
+  "stockCountedLabel": "Counted quantity on the shelf",
+  "stockReasonLabel": "Reason",
+  "stockNoteLabel": "Note (optional)",
+  "stockSave": "Save",
+  "stockCurrentLine": "Currently in stock: {current}",
+  "@stockCurrentLine": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      }
+    }
+  },
+  "stockSavedSnack": "Saved. Now in stock: {quantity}",
+  "@stockSavedSnack": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      }
+    }
+  },
+  "stockAmountInvalid": "Enter a whole number, like 12",
+  "stockInsufficient": "Only {current} in stock. You cannot take out more.",
+  "@stockInsufficient": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      }
+    }
+  },
+  "stockTooMuch": "That would go over the maximum stock.",
+  "stockNoChange": "This is the same as the recorded stock.",
+  "reasonPurchase": "Purchase",
+  "reasonSale": "Sale",
+  "reasonReturned": "Returned",
+  "reasonDamaged": "Damaged",
+  "reasonExpired": "Expired",
+  "reasonCorrection": "Correction",
+  "reasonOther": "Other",
+  "errorInsufficientStock": "Stock changed or is not enough. Please check and try again.",
+  "activityEmptyTitle": "No activity yet",
+  "activityEmptyBody": "Stock in, stock out and adjustments will appear here.",
+  "activityLoadErrorTitle": "Couldn't load activity",
+  "scanBarcode": "Scan barcode",
+  "scannerTitle": "Scan a barcode",
+  "scannerHint": "Hold the barcode inside the camera view. If the camera does not work, type the barcode.",
+  "scannerTorch": "Flash",
+  "scannerManualEntry": "Type the barcode instead",
+  "scannerManualTitle": "Type the barcode",
+  "scannerUseCode": "Use this barcode",
+  "scannerUnusableCode": "This code cannot be used as a barcode here.",
+  "scannerNoProductTitle": "No product with this barcode",
+  "scannerNoProductBody": "No product has the barcode {code} yet.",
+  "@scannerNoProductBody": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "lookupButton": "Look up details",
+  "lookupLoading": "Looking up…",
+  "lookupFound": "Details filled from the Open Food Facts list. Please check them and add the price yourself.",
+  "lookupNotFound": "This barcode is not in the online list. Type the details yourself.",
+  "lookupFailed": "Could not look up details. Check your internet and try again.",
+  "lookupNeedBarcode": "Enter or scan a valid barcode first.",
+  "productBrandLabel": "Brand (optional)",
+  "productBrandTooLong": "Brand can be at most {max} characters",
+  "@productBrandTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "imageCredit": "Picture: Open Food Facts (CC BY-SA)",
+  "removePicture": "Remove picture",
+  "priceHint": "Others reported {price} (on {date}). It may be old or from another shop.",
+  "@priceHint": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "priceHintUse": "Use as selling price",
+  "pickCommonItem": "Pick from common items",
+  "starterTitle": "Common items",
+  "starterNote": "Only names are filled. Scan the barcode and add price and stock yourself. Items are in packed sizes.",
+  "starterSearchHint": "Search items, brands or Hindi names",
+  "starterNoMatch": "No matching item. Add it yourself.",
+  "navBill": "Bill",
+  "errorPriceChanged": "A price changed while you were billing. Please check the items and try again.",
+  "billTitle": "New bill",
+  "billClear": "Clear bill",
+  "billHistory": "Bills",
+  "billScanItem": "Scan item",
+  "billAddByName": "By name",
+  "billEmptyTitle": "No items yet",
+  "billEmptyBody": "Scan an item's barcode to add it to the bill.",
+  "billNotInInventory": "Barcode {code} is not in your inventory.",
+  "@billNotInInventory": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "billOutOfStock": "Out of stock",
+  "billNotEnoughStock": "Not enough stock",
+  "billProductArchived": "This item is archived",
+  "billCartFull": "A bill can have at most {max} different items.",
+  "@billCartFull": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "billInStock": "In stock: {quantity}",
+  "@billInStock": {
+    "placeholders": {
+      "quantity": {
+        "type": "String"
+      }
+    }
+  },
+  "billDecrease": "Decrease",
+  "billIncrease": "Increase",
+  "billItemsCount": "{count} items",
+  "@billItemsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "billDiscount": "Discount",
+  "billDiscountHint": "Discount in rupees",
+  "billApply": "Apply",
+  "billTotal": "Total",
+  "billSubtotal": "Subtotal",
+  "billMakeBill": "Make bill",
+  "billSavedTitle": "Bill saved",
+  "billNotFound": "Bill not found",
+  "billNumberLabel": "Bill no. {number}",
+  "@billNumberLabel": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "billNewBill": "New bill",
+  "billHistoryEmpty": "No bills yet.",
+  "payTitle": "Payment",
+  "payFullCash": "Full cash",
+  "payFullUpi": "Full UPI",
+  "payFullUdhar": "Full udhar",
+  "payCash": "Cash",
+  "payUpi": "UPI",
+  "payUdhar": "Udhar",
+  "payUdharHint": "Whatever is not paid now",
+  "payTooMuch": "Cash + UPI is more than the total.",
+  "payNotBalanced": "Cash + UPI + udhar must equal the total.",
+  "payCustomerPhone": "Customer mobile number",
+  "payCustomerName": "Customer name",
+  "payCustomerNameRequired": "Enter the customer's name for udhar.",
+  "payCustomerPhoneInvalid": "Enter a valid 10-digit mobile number.",
+  "payCustomer": "Customer",
+  "payOldUdhar": "{name} already owes {amount}.",
+  "@payOldUdhar": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "payUseName": "Use \"{name}\"",
+  "@payUseName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "payConfirm": "Save bill",
+  "pdfOpen": "Bill PDF: print / share / download",
+  "pdfTitle": "Bill PDF",
+  "pdfTemplateClassic": "Classic",
+  "pdfTemplateModern": "Modern",
+  "pdfTemplateThermal": "Receipt",
+  "pdfTemplateMinimal": "Minimal",
+  "pdfPrint": "Print",
+  "pdfShare": "Share",
+  "pdfDownload": "Download",
+  "pdfSaved": "PDF saved.",
+  "pdfActionFailed": "Could not complete this. Please try again.",
+  "payCustomerOptionalTitle": "Customer (optional - printed on the bill)",
+  "payCustomerNameOptional": "Customer name (optional)",
+  "payCustomerPhoneOptional": "Customer mobile (optional)",
+  "billMakeNew": "Make a new bill",
+  "dashToday": "Today",
+  "dashYesterday": "Yesterday",
+  "dashLast7Days": "7 days",
+  "dashSales": "Sales",
+  "dashBillsItems": "{bills} bills • {items} items",
+  "@dashBillsItems": {
+    "placeholders": {
+      "bills": {
+        "type": "int"
+      },
+      "items": {
+        "type": "int"
+      }
+    }
+  },
+  "dashTruncated": "Showing the latest 500 bills only.",
+  "dashLoadError": "Could not load sales.",
+  "dashOwnSalesNote": "You see only the bills you made.",
+  "dashUdharPending": "Udhar pending",
+  "dashUdharCustomers": "{count} customers",
+  "@dashUdharCustomers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dashLowStockTitle": "Low stock: {count} items",
+  "@dashLowStockTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dashOutOfStock": "{count} out of stock",
+  "@dashOutOfStock": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dashAllStocked": "Everything is above its low-stock level.",
+  "dashViewAllProducts": "See all products",
+  "navUdhar": "Udhar",
+  "errorOverpayment": "That is more than the customer owes. Please check the amount.",
+  "udharTitle": "Udhar",
+  "udharTotal": "Total udhar",
+  "udharSearchHint": "Search name or mobile number",
+  "udharShowSettled": "Show settled",
+  "udharSettled": "Settled",
+  "udharEmptyBody": "No udhar yet. When a bill has udhar, the customer appears here.",
+  "udharNoMatch": "No matching customer.",
+  "udharLoadError": "Could not load udhar.",
+  "udharCustomerMissing": "Customer not found.",
+  "udharBalance": "Udhar balance",
+  "udharRecordPayment": "Record payment received",
+  "udharLedger": "History",
+  "udharEntryCredit": "Udhar (bill)",
+  "udharEntryPayment": "Payment received ({method})",
+  "@udharEntryPayment": {
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "udharPaymentTitle": "Payment received",
+  "udharDueNow": "Udhar due: {amount}",
+  "@udharDueNow": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "udharAmountLabel": "Amount received",
+  "udharFullAmount": "Full amount",
+  "udharNoteLabel": "Note (optional)",
+  "udharSavePayment": "Save payment",
+  "udharOverpay": "More than the udhar of {amount}",
+  "@udharOverpay": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "shopDetailsTitle": "Shop details",
+  "shopDetailsSubtitle": "Name, address, phone and UPI printed on bills",
+  "shopDetailsNote": "These details are printed at the top and bottom of every bill PDF. Only the owner can change them.",
+  "shopAddressLabel": "Address (optional)",
+  "shopUpiLabel": "UPI ID (optional)",
+  "shopUpiHelper": "Example: yourshop@okhdfcbank",
+  "shopFooterLabel": "Bottom line on bill (optional)",
+  "shopFooterHelper": "Example: Thank you! Visit again.",
+  "shopSave": "Save",
+  "shopSaved": "Shop details saved.",
+  "storeAddressTooLong": "Address can be at most {max} characters",
+  "@storeAddressTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "storeFooterTooLong": "This line can be at most {max} characters",
+  "@storeFooterTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "storeUpiInvalid": "Enter a valid UPI ID like name@bank",
+  "reportsOpen": "Reports",
+  "reportsTitle": "Sales report",
+  "reportsLast30Days": "30 days",
+  "reportsThisMonth": "This month",
+  "reportsCustom": "Pick dates",
+  "reportsExport": "Export CSV",
+  "reportsExported": "CSV saved.",
+  "reportsEmpty": "No bills in this period.",
+  "reportsTruncated": "Showing the latest {limit} bills only.",
+  "@reportsTruncated": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "reportsProfit": "Profit",
+  "reportsNoProfit": "Profit shows for bills made after this update (older bills did not save purchase prices).",
+  "reportsProfitPartial": "Counts {counted} of {total} bills that have purchase prices.",
+  "@reportsProfitPartial": {
+    "placeholders": {
+      "counted": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "reportsDayByDay": "Day by day",
+  "reportsBillsCount": "{bills} bills",
+  "@reportsBillsCount": {
+    "placeholders": {
+      "bills": {
+        "type": "int"
+      }
+    }
+  },
+  "reportsTopQuantity": "Most sold (quantity)",
+  "reportsTopRevenue": "Most sold (amount)",
+  "voiceOpen": "Add by voice",
+  "voiceTitle": "Add items by voice",
+  "voiceExample": "Say it like: 2 atta, 1 sugar, 3 parle g. You can also type below.",
+  "voiceTapToSpeak": "Tap the mic and speak",
+  "voiceListening": "Listening…",
+  "voiceTranscriptLabel": "What I heard (you can fix it)",
+  "voiceUnavailable": "Voice is not available on this phone. You can type here instead.",
+  "voiceMicError": "The microphone had a problem. Try again or type instead.",
+  "voiceLangEnglish": "English / Hinglish",
+  "voiceLangHindi": "हिन्दी",
+  "voiceNotFound": "Not found: {text}",
+  "@voiceNotFound": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "voiceCheckMatch": "Please check this match",
+  "voiceAdd": "Add to bill ({count})",
+  "@voiceAdd": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "voiceAdded": "{count} items added.",
+  "@voiceAdded": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "voiceAddedWithProblems": "{added} added. Problem: {problems}",
+  "@voiceAddedWithProblems": {
+    "placeholders": {
+      "added": {
+        "type": "int"
+      },
+      "problems": {
+        "type": "String"
+      }
+    }
+  },
+  "voiceNothing": "Nothing understood yet.",
+  "orderOpen": "Make order list",
+  "orderTitle": "Order list",
+  "orderIntro": "Items running low. Change how many to order; set 0 to skip an item.",
+  "orderEmpty": "Nothing is low on stock right now.",
+  "orderInStock": "In stock: {stock}",
+  "@orderInStock": {
+    "placeholders": {
+      "stock": {
+        "type": "String"
+      }
+    }
+  },
+  "orderCopy": "Copy text",
+  "orderShare": "Share PDF",
+  "orderCopied": "Order list copied.",
+  "orderLess": "Less",
+  "orderMore": "More",
+  "unitKg": "Kilogram (kg)",
+  "unitLitre": "Litre (L)",
+  "quantityKg": "{amount} kg",
+  "@quantityKg": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "quantityLitre": "{amount} L",
+  "@quantityLitre": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "quantityInvalid": "Enter an amount like 12 or 1.5 (up to 3 decimals).",
+  "billQuantityLabel": "Quantity",
+  "billQuantityInvalid": "Enter a valid amount, not more than the stock.",
+  "importTitle": "Import products",
+  "importMenu": "Import from file",
+  "importIntro": "Add many products at once from an Excel (.xlsx) or CSV file. Columns can be in any order. Headings like Name, Item, Barcode, Unit, Rate, MRP, Qty, Stock are understood. Download the sample sheet to see the format.",
+  "importPick": "Choose Excel / CSV file",
+  "importSample": "Download sample sheet",
+  "importSampleSaved": "Sample sheet saved.",
+  "importNoPermission": "You do not have permission to add products.",
+  "importReading": "Reading file…",
+  "importStop": "Stop",
+  "importErrRead": "Could not read this file. Open it in Excel and save as CSV, then try again.",
+  "importErrNoRows": "The file has no product rows.",
+  "importErrNoColumns": "Could not find a Name or Barcode column in the first row.",
+  "importErrNetwork": "Internet problem. The import stopped; the rest were not added. Check your connection and try again.",
+  "importErrUnknown": "Something went wrong. Please try again.",
+  "importAllowNoPrice": "Also add items with no selling price (price 0, set it later)",
+  "importNothing": "Nothing to add",
+  "importAnother": "Choose another file",
+  "importDoneTitle": "Import finished",
+  "importProblemsTitle": "Rows that need attention",
+  "importProblemNameMissing": "name missing",
+  "importProblemNameTooLong": "name is too long",
+  "importProblemBarcode": "barcode is not valid",
+  "importProblemUnit": "unit not recognised",
+  "importProblemPrice": "price is not valid",
+  "importProblemStock": "stock is not valid",
+  "importProblemThreshold": "low stock alert is not valid",
+  "importProblemTextLong": "brand, category or SKU is too long",
+  "importProblemExists": "already in your products",
+  "importProblemRepeated": "repeated in this file",
+  "importProblemNotFound": "barcode not found online, add a name",
+  "importProblemLookup": "could not look up the barcode",
+  "importProblemWrite": "could not be saved",
+  "importLookingUp": "Finding names from barcodes… {done}/{total}",
+  "@importLookingUp": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "importProgress": "Adding… {done}/{total}",
+  "@importProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "importTruncated": "Only the first {max} rows are used.",
+  "@importTruncated": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "importStart": "Add {count} products",
+  "@importStart": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importCountReady": "{count} ready",
+  "@importCountReady": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importCountAdded": "{count} added",
+  "@importCountAdded": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importCountNoPrice": "{count} without price",
+  "@importCountNoPrice": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importCountSkipped": "{count} skipped",
+  "@importCountSkipped": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importCountInvalid": "{count} with problems",
+  "@importCountInvalid": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importRowLine": "Row {line}: {reason}",
+  "@importRowLine": {
+    "placeholders": {
+      "line": {
+        "type": "int"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "importMoreProblems": "…and {count} more",
+  "@importMoreProblems": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "scannerPhotoButton": "Read barcode from a photo",
+  "scannerPhotoCamera": "Take a photo",
+  "scannerPhotoGallery": "Choose from gallery",
+  "scannerPhotoReading": "Reading photo…",
+  "scannerPhotoNotFound": "No barcode found in this photo. Keep the barcode flat, sharp and close, then try again.",
+  "scannerPhotoFailed": "Could not open the photo. Please try again.",
+  "importPhoto": "Photo of a bill or list",
+  "photoImportTitle": "Add from a photo",
+  "photoImportIntro": "Take a photo of a supplier bill or a stock list, or pick one from the gallery. The text is read on your phone, and you check every item before anything is added. Printed text works best; handwriting is often wrong.",
+  "photoImportReading": "Reading photo…",
+  "photoImportFailed": "Could not read the photo. Please try again.",
+  "photoImportEmpty": "No text found in this photo. Use good light and keep the page flat.",
+  "photoImportNoItems": "Text was found, but no product rows. Try a closer, sharper photo.",
+  "photoImportCheck": "Check every item. Fix names and numbers, and untick what is not a product. Add a selling price, or those items wait on the next screen.",
+  "photoImportRetake": "Another photo",
+  "photoImportName": "Name",
+  "photoImportStock": "Stock",
+  "photoImportCost": "Purchase price",
+  "photoImportSelling": "Selling price",
+  "photoImportContinue": "Continue with {count} items",
+  "@photoImportContinue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "billPendingLabel": "Bill (waiting to sync)",
+  "billSavedOfflineNote": "No internet. This bill is saved on your phone. It will be added to your records, and the stock reduced, when the internet is back.",
+  "pendingScreenTitle": "Bills waiting to sync",
+  "pendingEmpty": "Nothing is waiting. All bills are saved.",
+  "pendingSyncNow": "Try now",
+  "pendingRetry": "Retry",
+  "pendingDiscard": "Discard",
+  "pendingDiscardTitle": "Discard this bill?",
+  "pendingDiscardBody": "This bill was never saved to your records and the stock was not reduced. Discarding removes it for good.",
+  "pendingWaitingLine": "Waiting for internet",
+  "pendingReasonStock": "Not enough stock now. Add stock, then retry.",
+  "pendingReasonPrice": "A price changed after this bill was made. Set the old price back and retry, or discard.",
+  "pendingReasonGone": "A product in this bill was archived. Discard it and make the bill again.",
+  "pendingReasonOther": "Could not be saved. Try again.",
+  "pendingBannerWaiting": "Working offline – {count} bills will sync when internet returns",
+  "@pendingBannerWaiting": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pendingBannerAttention": "{count} bills need your attention",
+  "@pendingBannerAttention": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "productsExport": "Download products (CSV backup)",
+  "productsExported": "Products saved. You can import this file again from Import.",
+  "navNewSale": "New sale",
+  "dashKpiLowStock": "Low stock",
+  "dashRecentTitle": "Recent sales",
+  "dashRecentEmpty": "No sales yet.\nTap the + button to make your first bill!",
+  "dashTagReceived": "Received",
+  "dashTagPending": "Pending",
+  "homeQuickAddProduct": "Add product",
+  "homeQuickImport": "Import Excel",
+  "homeQuickSync": "Sync offline",
+  "homeQuickSetup": "Setup store",
+  "homeGreetingMorning": "Good morning",
+  "homeGreetingAfternoon": "Good afternoon",
+  "homeGreetingEvening": "Good evening",
+  "ownerNameLabel": "Owner name",
+  "ownerNameHelper": "Your name, shown in the greeting on the home screen",
+  "profileTitle": "Profile & settings",
+  "profileSectionShop": "Shop",
+  "profileSectionPreferences": "Preferences",
+  "profileSectionSupport": "Support",
+  "profileOwnerFallback": "Shop owner",
+  "settingsLanguage": "Language",
+  "settingsLanguageSystem": "Phone default",
+  "settingsTheme": "Appearance",
+  "settingsThemeSystem": "Phone default",
+  "settingsThemeLight": "Light",
+  "settingsThemeDark": "Dark",
+  "settingsHelp": "Help & support",
+  "settingsHelpSubtitle": "Common questions and tips",
+  "settingsAbout": "About Apna Shop",
+  "aboutBody": "Simple stock, billing and udhar for your shop. Your data is saved safely online and bills can be made even without internet.",
+  "helpTitle": "Help & support",
+  "helpQ1": "Internet is off. Can I still make a bill?",
+  "helpA1": "Yes. The bill is saved on your phone and goes online by itself when internet returns. You can see waiting bills at the top of the screen.",
+  "helpQ2": "How do I add many products quickly?",
+  "helpA2": "Open Products and use Import (Excel/CSV or a photo of a list). You can also scan a barcode while adding a product.",
+  "helpQ3": "A customer took goods on udhar. What now?",
+  "helpA3": "While billing, choose Udhar and enter the customer's name and phone. Later open Udhar and tap Record payment when they pay.",
+  "helpQ4": "How do I change my name, shop name or UPI?",
+  "helpA4": "Profile > Shop details. The owner name appears in the greeting on Home.",
+  "helpQ5": "How do I use Hindi or dark mode?",
+  "helpA5": "Profile > Language and Appearance. The choice is remembered on this phone.",
+  "billSearchHint": "Search item by name",
+  "billRemoveItem": "Remove item",
+  "billPayAmount": "Pay {amount}",
+  "@billPayAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "productsFilterAll": "All",
+  "productsFilterOut": "Out of stock",
+  "productOutBadge": "Out of stock",
+  "productInBadge": "In stock"
 }

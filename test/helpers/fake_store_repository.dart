@@ -7,6 +7,8 @@ class FakeStoreRepository implements StoreRepository {
 
   AppException? createError;
   final List<CreateStoreRequest> created = <CreateStoreRequest>[];
+  final List<StoreDetailsInput> updated = <StoreDetailsInput>[];
+  AppException? updateError;
   int _idCounter = 0;
 
   @override
@@ -29,5 +31,15 @@ class FakeStoreRepository implements StoreRepository {
     final error = createError;
     if (error != null) throw error;
     created.add(request);
+  }
+
+  @override
+  Future<void> updateDetails({
+    required String storeId,
+    required StoreDetailsInput details,
+  }) async {
+    final error = updateError;
+    if (error != null) throw error;
+    updated.add(details);
   }
 }

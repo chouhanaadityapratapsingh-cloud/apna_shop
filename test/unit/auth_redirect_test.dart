@@ -149,7 +149,8 @@ void main() {
         AppRoutes.home,
         AppRoutes.products,
         AppRoutes.activity,
-        AppRoutes.reports,
+        AppRoutes.bill,
+        AppRoutes.udhar,
         AppRoutes.profile,
       ]) {
         expect(

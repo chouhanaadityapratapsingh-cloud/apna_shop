@@ -107,4 +107,34 @@ class FirestoreStoreRepository implements StoreRepository {
       throw const AppException(AppErrorType.network, debugCode: 'timeout');
     }
   }
+
+  @override
+  Future<void> updateDetails({
+    required String storeId,
+    required StoreDetailsInput details,
+  }) async {
+    final storeRef = _firestore.collection('stores').doc(storeId);
+    // A missing optional value removes the field.
+    Object? value(String? text) => text ?? FieldValue.delete();
+    try {
+      // A transaction fails fast without internet, instead of queueing a
+      // write that would apply later.
+      await _firestore
+          .runTransaction<void>((tx) async {
+            tx.update(storeRef, <String, Object?>{
+              'name': details.name,
+              'city': value(details.city),
+              'phone': value(details.phone),
+              'address': value(details.address),
+              'footerNote': value(details.footerNote),
+              'upiId': value(details.upiId),
+            });
+          })
+          .timeout(_networkTimeout);
+    } on FirebaseException catch (error) {
+      throw mapFirestoreException(error);
+    } on TimeoutException {
+      throw const AppException(AppErrorType.network, debugCode: 'timeout');
+    }
+  }
 }

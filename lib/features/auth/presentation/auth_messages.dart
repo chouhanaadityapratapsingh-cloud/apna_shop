@@ -26,6 +26,11 @@ String errorText(AppLocalizations l10n, Object error) {
     AppErrorType.userDisabled => l10n.errorUserDisabled,
     AppErrorType.permissionDenied => l10n.errorPermissionDenied,
     AppErrorType.storeAlreadyExists => l10n.errorStoreAlreadyExists,
+    AppErrorType.duplicateBarcode => l10n.errorDuplicateBarcode,
+    AppErrorType.productNotFound => l10n.productNotFound,
+    AppErrorType.insufficientStock => l10n.errorInsufficientStock,
+    AppErrorType.priceChanged => l10n.errorPriceChanged,
+    AppErrorType.overpayment => l10n.errorOverpayment,
     AppErrorType.unknown => l10n.errorUnknown,
   };
 }

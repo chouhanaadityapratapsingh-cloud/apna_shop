@@ -9,6 +9,9 @@ class Store {
     this.timezone = 'Asia/Kolkata',
     this.city,
     this.phone,
+    this.address,
+    this.footerNote,
+    this.upiId,
     this.isActive = true,
     this.createdAt,
   });
@@ -20,6 +23,15 @@ class Store {
   final String timezone;
   final String? city;
   final String? phone;
+
+  /// Street / market address printed on bills.
+  final String? address;
+
+  /// Line printed at the bottom of bills, e.g. "Thank you! Visit again."
+  final String? footerNote;
+
+  /// The shop's UPI id, printed on bills.
+  final String? upiId;
   final bool isActive;
 
   /// Null while the server timestamp has not been confirmed yet.
@@ -57,6 +69,28 @@ class StoreMember {
 }
 
 /// Everything needed to create a store and its owner membership.
+/// What the owner can change later on the "Shop details" screen. Optional
+/// fields that are null are removed from the store.
+class StoreDetailsInput {
+  const StoreDetailsInput({
+    required this.name,
+    this.city,
+    this.phone,
+    this.address,
+    this.footerNote,
+    this.upiId,
+  });
+
+  final String name;
+  final String? city;
+
+  /// 10-digit mobile number.
+  final String? phone;
+  final String? address;
+  final String? footerNote;
+  final String? upiId;
+}
+
 class CreateStoreRequest {
   const CreateStoreRequest({
     required this.storeId,
