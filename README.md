@@ -4,14 +4,12 @@ Simple stock, billing and udhar (credit) app for Indian kirana stores.
 Built with Flutter and Firebase, in English and Hindi, and made for a real
 shopkeeper in Madhya Pradesh.
 
-<!-- Add screenshots to docs/screenshots and uncomment:
 <p>
   <img src="docs/screenshots/home.jpeg" width="180" />
   <img src="docs/screenshots/billing.jpeg" width="180" />
   <img src="docs/screenshots/products.jpeg" width="180" />
   <img src="docs/screenshots/udhar.jpeg" width="180" />
 </p>
--->
 
 ## What it does
 
@@ -82,5 +80,5 @@ See [RELEASE.md](RELEASE.md).
 
 ## Status
 
-In use by a local kirana store. Ideas for later: product expiry dates,
-multiple stores, barcode label printing.
+Built for a real kirana shopkeeper; being tested before rollout. Ideas for later:
+product expiry dates, multiple stores, barcode label printing.
